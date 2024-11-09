@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 8),
-              const TextField(
+              TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your email',
@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 8),
-              const TextField(
+              TextField(
                 obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),

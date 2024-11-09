@@ -26,7 +26,7 @@ class CreateAccountPage extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 8),
-              const TextField(
+              TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your name',
@@ -38,7 +38,7 @@ class CreateAccountPage extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 8),
-              const TextField(
+              TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your email',
@@ -50,7 +50,7 @@ class CreateAccountPage extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 8),
-              const TextField(
+              TextField(
                 obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),

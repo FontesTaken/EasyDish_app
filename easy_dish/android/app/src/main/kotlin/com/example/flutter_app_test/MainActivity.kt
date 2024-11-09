@@ -1,4 +1,4 @@
-package com.example.easy_dish
+package com.example.flutter_app_test
 
 import io.flutter.embedding.android.FlutterActivity
 

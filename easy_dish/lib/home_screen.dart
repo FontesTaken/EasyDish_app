@@ -1,5 +1,6 @@
 // home_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/bookmark_page.dart';
 import 'home_page.dart';
 import 'profile_page.dart';
 import 'cart_page.dart'; // Import CartPage
@@ -15,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 1; // Default to Home tab
 
   final List<Widget> _pages = [
-    const Center(child: Text('Bookmark Page')), // Replace with BookmarkPage if available
+    const BookmarkPage(), // Replace with BookmarkPage if available
     const HomePage(), // Home Page
     const CartPage(), // Cart Page (Shopping List)
     const ProfilePage(), // Profile Page
