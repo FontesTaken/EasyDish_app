@@ -6,7 +6,7 @@ import 'tag_widget.dart';
 import 'bookmark_manager.dart';
 import 'comment.dart';
 import 'comments_page.dart';
-import 'rate_recipe_page.dart'; // Import the rating page
+import 'rate_recipe_page.dart';
 
 class RecipeDetailPage extends StatefulWidget {
   final Recipe recipe;

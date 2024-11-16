@@ -1,5 +1,6 @@
 // home_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/enter_app_options.dart';
 import 'about_us.dart';
 import 'login_page.dart';
 import 'recipe.dart';
@@ -228,7 +229,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pop(context);
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const WelcomeScreen()),
                     (route) => false,
                   );
                 },

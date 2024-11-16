@@ -1,128 +1,248 @@
-// login_page.dart
 import 'package:flutter/material.dart';
-import 'home_screen.dart'; // Import HomeScreen
+import 'package:flutter_app_test/data_classes/user_data.dart';
+import 'home_screen.dart';
 import 'create_account_page.dart';
 import 'forgot_password_page.dart';
+import 'enter_app_options.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  LoginPageState createState() => LoginPageState();
+}
+
+class LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // Error message to display
+  String _errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orange[100],
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Image.asset(
-                    'assets/logo_transp.png',
-                    height: 180,
-                    width: 180,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                const Text(
-                  'Login',
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 32),
-                const Text(
-                  'Email Address:',
-                  style: TextStyle(fontSize: 18),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your email',
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Password:',
-                  style: TextStyle(fontSize: 18),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your password',
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Navigate to HomeScreen on successful login
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const HomeScreen()),
-                      );
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-                      child: Text(
-                        'Enter',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Center(
+      body: Stack(
+        children: [
+          // Main Content
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.orange.withOpacity(0.6), Colors.orangeAccent.withOpacity(0.9)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          // Navigate to ForgotPasswordPage
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
-                          );
-                        },
-                        child: const Text(
-                          'Forgot Password?',
-                          style: TextStyle(fontSize: 16),
+                      // App Logo
+                      Center(
+                        child: Image.asset(
+                          'assets/logo_transp.png',
+                          height: 160,
+                          width: 160,
+                          fit: BoxFit.contain,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Don't have an account?",
-                            style: TextStyle(fontSize: 16),
+                      const SizedBox(height: 32),
+                      // Login Text
+                      const Text(
+                        'Login',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      // Email Field
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: _emailController,
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.email_outlined, color: Colors.deepOrangeAccent),
+                            hintText: 'Email',
+                            hintStyle: TextStyle(fontSize: 16),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              // Navigate to CreateAccountPage
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Password Field
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          obscureText: true,
+                          controller: _passwordController,
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.lock_outline, color: Colors.deepOrangeAccent),
+                            hintText: 'Password',
+                            hintStyle: TextStyle(fontSize: 16),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Show error message if credentials don't match
+                      if (_errorMessage.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 14),
+                          child: Text(
+                            _errorMessage,
+                            style: const TextStyle(color: Colors.pink, fontSize: 14, fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      // Login Button
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepOrangeAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+                            minimumSize: const Size(200, 50),
+                          ),
+                          onPressed: () {
+                            String email = _emailController.text.trim();
+                            String password = _passwordController.text.trim();
+
+                            // Check if the credentials match with the singleton
+                            if (UserData.instance.email == email && UserData.instance.password == password) {
+                              // Navigate to HomeScreen without initializing UserData
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const CreateAccountPage()),
+                                MaterialPageRoute(
+                                  builder: (context) => const HomeScreen(),
+                                ),
                               );
-                            },
-                            child: const Text(
-                              'Create account',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            } else {
+                              // Show error message if credentials don't match
+                              setState(() {
+                                _errorMessage = "The email or password is incorrect. Please try again.";
+                              });
+                            }
+                          },
+                          child: const Text(
+                            'Log In',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
                             ),
                           ),
-                        ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      // Forgot Password and Create Account
+                      Center(
+                        child: Column(
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
+                                );
+                              },
+                              child: const Text(
+                                'Forgot Password?',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.white,
+                                  decorationThickness: 1.8,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Don't have an account?",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const CreateAccountPage()),
+                                    );
+                                  },
+                                  child: const Text(
+                                    'Create account',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.white,
+                                      decorationThickness: 1.8,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+          // Back Button at the top-left
+          Positioned(
+            top: 24,
+            left: 16,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

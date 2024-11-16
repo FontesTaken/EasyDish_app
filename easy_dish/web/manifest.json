@@ -1,6 +1,6 @@
 {
-    "name": "flutter_app_test",
-    "short_name": "flutter_app_test",
+    "name": "EasyDish",
+    "short_name": "EasyDish",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

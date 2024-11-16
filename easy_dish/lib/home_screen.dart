@@ -1,11 +1,13 @@
 // home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/bookmark_page.dart';
+import 'data_classes/user_data.dart';
 import 'home_page.dart';
 import 'profile_page.dart';
-import 'cart_page.dart'; // Import CartPage
+import 'cart_page.dart';
 
 class HomeScreen extends StatefulWidget {
+
   const HomeScreen({super.key});
 
   @override
@@ -16,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 1; // Default to Home tab
 
   final List<Widget> _pages = [
-    const BookmarkPage(), // Replace with BookmarkPage if available
+    const BookmarkPage(), // Bookmark Page
     const HomePage(), // Home Page
     const CartPage(), // Cart Page (Shopping List)
     const ProfilePage(), // Profile Page
@@ -43,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart), // Cart icon for the Shopping List page
+            icon: Icon(Icons.shopping_cart),
             label: 'Cart',
           ),
           BottomNavigationBarItem(
