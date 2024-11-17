@@ -1,240 +1,213 @@
-// profile_page.dart
 import 'package:flutter/material.dart';
-import 'profile_data.dart';
+import 'package:flutter_app_test/data_classes/user_data.dart'; // Import the UserData singleton
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ProfilePageState createState() => ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  // Controllers to handle text editing
-  late TextEditingController nameController;
-  late TextEditingController aboutMeController;
-  late TextEditingController preferencesController;
-  late TextEditingController favoriteIngredientsController;
-  late TextEditingController experienceController;
+class ProfilePageState extends State<ProfilePage> {
 
-  bool isEditing = false; // Toggle between view and edit mode
+  final List<String> recipes = [
+    "Spaghetti Bolognese",
+    "Chicken Alfredo",
+    "Vegan Tacos",
+    "Chocolate Cake",
+    "Grilled Cheese Sandwich",
+    "Caesar Salad",
+  ];
+
+  String userName = '';
+  String userEmail = '';
+  String description = '';
+  String experienceLevel = '';
 
   @override
   void initState() {
     super.initState();
-    // Initialize the text controllers with the data from ProfileData singleton
-    nameController = TextEditingController(text: ProfileData.instance.name);
-    aboutMeController =
-        TextEditingController(text: ProfileData.instance.aboutMe);
-    preferencesController =
-        TextEditingController(text: ProfileData.instance.preferences);
-    favoriteIngredientsController =
-        TextEditingController(text: ProfileData.instance.favoriteIngredients);
-    experienceController =
-        TextEditingController(text: ProfileData.instance.experience);
+
+    // Load user data from the UserData singleton when the page is loaded
+    _loadUserData();
   }
 
-  @override
-  void dispose() {
-    // Dispose controllers to free resources
-    nameController.dispose();
-    aboutMeController.dispose();
-    preferencesController.dispose();
-    favoriteIngredientsController.dispose();
-    experienceController.dispose();
-    super.dispose();
-  }
-
-  void toggleEditMode() {
+  // Function to load user data from the singleton
+  void _loadUserData() {
     setState(() {
-      if (isEditing) {
-        // Save changes to ProfileData when exiting edit mode
-        ProfileData.instance.update(
-          name: nameController.text,
-          aboutMe: aboutMeController.text,
-          preferences: preferencesController.text,
-          favoriteIngredients: favoriteIngredientsController.text,
-          experience: experienceController.text,
-        );
-      }
-      // Toggle the editing state
-      isEditing = !isEditing;
+      userName = UserData.instance.name ?? 'No Name';
+      userEmail = UserData.instance.email ?? 'No Email';
+      description = UserData.instance.aboutMe ?? 'No Description';
+      experienceLevel = UserData.instance.experience ?? 'No Experience Level';
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:
-          true, // Allows layout to adjust when keyboard opens
-      appBar: AppBar(
-        title: const Text('Profile'),
-        automaticallyImplyLeading: false, // Remove the back arrow
-        actions: [
-          IconButton(
-            icon: Icon(isEditing ? Icons.check : Icons.edit),
-            onPressed: toggleEditMode,
-          ),
-        ],
-      ),
-
-      body: SingleChildScrollView(
-        // Enables scrolling when content overflows
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Profile picture and name
-            Center(
+      body: Container(
+        color: Colors.orange.withOpacity(0.1),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.grey[300],
-                    child: const Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.white,
+                  // Header Image with Edit Button
+                  Stack(
+                    children: [
+                      // Header Image
+                      Container(
+                        height: 200,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.orange.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.asset(
+                            "assets/meal_default_img.jpg",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      // Edit Button
+                      Positioned(
+                        top: 16, // Position from the top
+                        right: 16, // Position from the right
+                        child: CircleAvatar(
+                          backgroundColor: Colors.orangeAccent,
+                          radius: 24,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              // Handle the edit button press here
+                              // TODO edit profile screen
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Profile Section
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Profile Picture
+                      Container(
+                        height: 130,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          color: Colors.orange.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.account_circle,
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      // Name, Email, and Experience
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Name
+                          Text(
+                            userName,
+                            style: const TextStyle(
+                              fontSize: 21,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.deepOrange,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          // Email
+                          Text(
+                            userEmail,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black54, // Slightly grayish color
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          // Experience Level
+                          Text(
+                            "Experience: $experienceLevel",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.orangeAccent,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Description Section
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Recipes Section
+                  const Divider(
+                    color: Colors.orangeAccent,
+                    thickness: 1,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Recipes",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  isEditing
-                      ? TextField(
-                          controller: nameController,
-                          decoration: const InputDecoration(
-                            labelText: 'Name',
-                            border: OutlineInputBorder(),
-                          ),
-                          textAlign: TextAlign.center,
-                        )
-                      : Text(
-                          ProfileData
-                              .instance.name, // Load name from ProfileData
-                          style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
+
+                  // Recipes List (You can keep this static as you mentioned)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: recipes.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.orange.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(12),
                         ),
+                        child: Text(
+                          recipes[index],
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 32),
-
-            // "About Me" section
-            const Text(
-              'About Me:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            isEditing
-                ? TextField(
-                    controller: aboutMeController,
-                    maxLines: 3,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Write about yourself...',
-                    ),
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Text(
-                      ProfileData
-                          .instance.aboutMe, // Load aboutMe from ProfileData
-                      style: const TextStyle(color: Colors.black87),
-                    ),
-                  ),
-            const SizedBox(height: 16),
-
-            // "Preferences" section
-            const Text(
-              'Preferences:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            isEditing
-                ? TextField(
-                    controller: preferencesController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Your preferences...',
-                    ),
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Text(
-                      ProfileData.instance
-                          .preferences, // Load preferences from ProfileData
-                      style: const TextStyle(color: Colors.black87),
-                    ),
-                  ),
-            const SizedBox(height: 16),
-
-            // "Favorite Ingredients" section
-            const Text(
-              'Favorite Ingredients:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            isEditing
-                ? TextField(
-                    controller: favoriteIngredientsController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'List your favorite ingredients...',
-                    ),
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Text(
-                      ProfileData.instance
-                          .favoriteIngredients, // Load favoriteIngredients from ProfileData
-                      style: const TextStyle(color: Colors.black87),
-                    ),
-                  ),
-            const SizedBox(height: 16),
-
-            // "Experience" section
-            const Text(
-              'Experience:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            isEditing
-                ? TextField(
-                    controller: experienceController,
-                    maxLines: 3,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Describe your experience...',
-                    ),
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Text(
-                      ProfileData.instance
-                          .experience, // Load experience from ProfileData
-                      style: const TextStyle(color: Colors.black87),
-                    ),
-                  ),
-          ],
+          ),
         ),
       ),
     );

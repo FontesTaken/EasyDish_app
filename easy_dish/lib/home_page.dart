@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/enter_app_options.dart';
 import 'about_us.dart';
+import 'data_classes/user_data.dart';
 import 'login_page.dart';
 import 'recipe.dart';
 import 'recipe_data.dart';
@@ -170,70 +171,93 @@ class _HomePageState extends State<HomePage> {
           title: const Text('Recipes'),
           automaticallyImplyLeading: false, // Remove the back arrow
           actions: [
-            Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
+            if (UserData.instance.isLoggedIn)
+              Builder(
+                builder: (context) => IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                ),
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.info),
                 onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
+                  // Navigate to the About Us page when not logged in
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AboutUsPage()),
+                  );
                 },
               ),
-            ),
           ],
         ),
         endDrawer: Drawer(
           child: Column(
             children: [
-              // Top three menu items
-              ListTile(
-                leading: const Icon(Icons.bookmark_border),
-                title: const Text('Bookmarks'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.add),
-                title: const Text('Create Recipe'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.list_alt),
-                title: const Text('My Recipes'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-
-              // Spacer pushes the last two items to the bottom
-              const Spacer(),
-              const Divider(),
-
-              // Bottom two menu items
-              ListTile(
-                title: const Text('About Us'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AboutUsPage()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Log Out'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-                    (route) => false,
-                  );
-                },
-              ),
+              if (UserData.instance.isLoggedIn) ...[
+                // Menu items for logged-in users
+                ListTile(
+                  leading: const Icon(Icons.bookmark_border),
+                  title: const Text('Bookmarks'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.add),
+                  title: const Text('Create Recipe'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.list_alt),
+                  title: const Text('My Recipes'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                const Spacer(),
+                const Divider(),
+                ListTile(
+                  title: const Text('About Us'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AboutUsPage()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Log Out'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    UserData.instance.isLoggedIn = false;
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+                          (route) => false,
+                    );
+                  },
+                ),
+              ] else ...[
+                // Menu for users who are not logged in
+                ListTile(
+                  leading: const Icon(Icons.info),
+                  title: const Text('Information'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AboutUsPage()),
+                    );
+                  },
+                ),
+              ],
             ],
           ),
         ),

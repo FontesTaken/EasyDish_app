@@ -32,11 +32,11 @@ class WelcomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             // Welcome Text
             const Text(
-              'Welcome to EasyDish',
+              'Welcome to EasyDish!',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color(0xA8820A00),
               ),
             ),
             const SizedBox(height: 8),
@@ -44,11 +44,11 @@ class WelcomeScreen extends StatelessWidget {
               'Please select a login option',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white70,
-                fontWeight: FontWeight.w900,
+                color: Color(0x7C600700),
+                fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: 38),
             // Login Button
             SizedBox(
               width: 250,

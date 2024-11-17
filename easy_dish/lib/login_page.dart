@@ -58,10 +58,10 @@ class LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Color(0xA8820A00),
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                       // Email Field
                       Container(
                         decoration: BoxDecoration(
@@ -140,6 +140,7 @@ class LoginPageState extends State<LoginPage> {
                             // Check if the credentials match with the singleton
                             if (UserData.instance.email == email && UserData.instance.password == password) {
                               // Navigate to HomeScreen without initializing UserData
+                              UserData.instance.isLoggedIn = true;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -178,10 +179,10 @@ class LoginPageState extends State<LoginPage> {
                                 'Forgot Password?',
                                 style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
+                                  color: Color(0x7C600700),
+                                  fontWeight: FontWeight.w500,
                                   decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white,
+                                  decorationColor: Color(0x7C600700),
                                   decorationThickness: 1.8,
                                 ),
                               ),
@@ -194,7 +195,7 @@ class LoginPageState extends State<LoginPage> {
                                   "Don't have an account?",
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: Colors.white,
+                                    color: Color(0x7C600700),
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -210,9 +211,9 @@ class LoginPageState extends State<LoginPage> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white,
+                                      color: Color(0x7C600700),
                                       decoration: TextDecoration.underline,
-                                      decorationColor: Colors.white,
+                                      decorationColor: Color(0x7C600700),
                                       decorationThickness: 1.8,
                                     ),
                                   ),

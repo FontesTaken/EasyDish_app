@@ -8,6 +8,7 @@ class UserData {
   String favoriteIngredients;
   String experience;
   String password;
+  bool isLoggedIn;
 
   // Private constructor to prevent direct instantiation
   UserData._privateConstructor({
@@ -17,7 +18,8 @@ class UserData {
     required this.preferences,
     required this.favoriteIngredients,
     required this.experience,
-    required this.password
+    required this.password,
+    required this.isLoggedIn,
   });
 
 
@@ -34,7 +36,8 @@ class UserData {
       aboutMe: "Write about yourself...",
       preferences: "Write your preferences...",
       favoriteIngredients: "Tell us your favorite ingredients...",
-      experience: "Insert your experience...", password: '',
+      experience: "Undisclosed", password: '',
+      isLoggedIn: false,
     );
     return _instance!;
   }
@@ -55,18 +58,14 @@ class UserData {
         aboutMe: aboutMe ?? "Write about yourself...",
         preferences: preferences ?? "Write your preferences...",
         favoriteIngredients: favoriteIngredients ?? "Tell us your favorite ingredients...",
-        experience: experience ?? "Insert your experience...",
-        password: password
+        experience: experience ?? "Undisclosed",
+        password: password, isLoggedIn: true
       );
   }
 
   // Method to reset the UserData
   void clear() {
     _instance = null;
-  }
-
-  bool isLoggedIn() {
-    return email != null;
   }
 
   String getUserInfo() {

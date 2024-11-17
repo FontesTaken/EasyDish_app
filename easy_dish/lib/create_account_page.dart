@@ -58,7 +58,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Color(0xA8820A00),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -180,13 +180,22 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                               });
 
                               // Show success popup
+                              // Show success popup
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
                                   title: const Text('Success'),
                                   content: const Text('Your account has been created!'),
                                   actions: [
-                                    TextButton(
+                                    // Orange button for the OK action
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.deepOrangeAccent, // Set the background color to orange
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(12), // Optional: Add rounded corners
+                                        ),
+                                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12), // Optional: Adjust padding
+                                      ),
                                       onPressed: () {
                                         // Close the dialog and navigate to HomeScreen
                                         Navigator.pop(context); // Close the dialog
@@ -195,11 +204,19 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                                           MaterialPageRoute(builder: (context) => const HomeScreen()),
                                         );
                                       },
-                                      child: const Text('OK'),
+                                      child: const Text(
+                                        'OK',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white, // Set the text color to white inside the orange button
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
                               );
+
                             }
                           },
                           child: const Text(
@@ -218,7 +235,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                           children: [
                             const Text(
                               "Already have an account?",
-                              style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w500),
+                              style: TextStyle(fontSize: 16, color: Color(0x7C600700), fontWeight: FontWeight.w500),
                             ),
                             TextButton(
                               onPressed: () {
@@ -233,9 +250,9 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: Color(0x7C600700),
                                   decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white,
+                                  decorationColor: Color(0x7C600700),
                                   decorationThickness: 1.8,
                                 ),
                               ),
