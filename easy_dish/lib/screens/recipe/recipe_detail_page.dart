@@ -1,10 +1,10 @@
 // recipe_detail_page.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'recipe.dart';
-import 'tag_widget.dart';
-import 'bookmark_manager.dart';
-import 'comment.dart';
+import '../../data_classes/recipe.dart';
+import '../auxiliary/tag_widget.dart';
+import '../bookmark/bookmark_manager.dart';
+import '../../data_classes/comment.dart';
 import 'comments_page.dart';
 import 'rate_recipe_page.dart';
 

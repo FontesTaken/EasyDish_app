@@ -1,7 +1,7 @@
 // bookmark_page.dart
 import 'package:flutter/material.dart';
+import '../recipe/recipe_detail_page.dart';
 import 'bookmark_manager.dart';
-import 'recipe_detail_page.dart';
 
 class BookmarkPage extends StatefulWidget {
   const BookmarkPage({super.key});

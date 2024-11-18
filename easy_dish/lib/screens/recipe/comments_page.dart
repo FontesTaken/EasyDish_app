@@ -1,6 +1,6 @@
 // comments_page.dart
 import 'package:flutter/material.dart';
-import 'comment.dart'; // Import the Comment class from comment.dart
+import '../../data_classes/comment.dart'; // Import the Comment class from comment.dart
 
 class CommentsPage extends StatelessWidget {
   final List<Comment> comments;

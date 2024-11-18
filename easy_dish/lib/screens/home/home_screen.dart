@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/bookmark_page.dart';
-import 'package:flutter_app_test/enter_app_options.dart';
-import 'data_classes/user_data.dart';
+import 'package:flutter_app_test/screens/guest/enter_app_options.dart';
+import 'package:flutter_app_test/screens/bookmark/bookmark_page.dart';
+
+import '../cart/cart_page.dart';
+import '../../data_classes/user_data.dart';
+import '../profile/profile_page.dart';
 import 'home_page.dart';
-import 'profile_page.dart';
-import 'cart_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -76,9 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         items: navBarItems,
-        selectedItemColor: Colors.deepOrange, // Active icon color
-        unselectedItemColor: Colors.grey, // Inactive icon color
-        backgroundColor: Colors.white, // Background color
+        selectedItemColor:  const Color(0xFF885B0E), // Active icon color
+        unselectedItemColor: Colors.white, // Inactive icon color
+        backgroundColor:  const Color(0xFFEAAD4F), // Background color
         type: BottomNavigationBarType.fixed, // Keeps all icons visible
         selectedLabelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         unselectedLabelStyle: const TextStyle(fontSize: 12),

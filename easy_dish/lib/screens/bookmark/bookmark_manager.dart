@@ -1,5 +1,5 @@
 // bookmark_manager.dart
-import 'recipe.dart';
+import '../../data_classes/recipe.dart';
 
 class BookmarkManager {
   static final BookmarkManager _instance = BookmarkManager._internal();

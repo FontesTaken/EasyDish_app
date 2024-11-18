@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/data_classes/user_data.dart';
-import 'home_screen.dart';
+import 'enter_app_options.dart';
+import '../home/home_screen.dart';
 import 'create_account_page.dart';
 import 'forgot_password_page.dart';
-import 'enter_app_options.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

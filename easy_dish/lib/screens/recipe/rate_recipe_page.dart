@@ -1,6 +1,6 @@
 // rate_recipe_page.dart
 import 'package:flutter/material.dart';
-import 'comment.dart';
+import '../../data_classes/comment.dart';
 
 class RateRecipePage extends StatefulWidget {
   final String recipeName;

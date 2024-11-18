@@ -12,12 +12,12 @@ class TagWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       margin: const EdgeInsets.only(right: 4.0, bottom: 4.0),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: const Color(0xFFEEAE36),
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: Text(
         text,
-        style: const TextStyle(fontSize: 12, color: Colors.black87),
+        style: const TextStyle(fontSize: 12, color: Colors.white),
       ),
     );
   }

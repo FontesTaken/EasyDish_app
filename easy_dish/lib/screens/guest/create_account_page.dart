@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/data_classes/user_data.dart';
-import 'home_screen.dart';
-import 'login_page.dart';
 import 'enter_app_options.dart';
+import '../home/home_screen.dart';
+import 'login_page.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});

@@ -1,8 +1,8 @@
 // search_results_page.dart
 import 'package:flutter/material.dart';
-import 'recipe.dart';
-import 'recipe_detail_page.dart';
-import 'tag_widget.dart';
+import '../../data_classes/recipe.dart';
+import '../recipe/recipe_detail_page.dart';
+import '../auxiliary/tag_widget.dart';
 
 class SearchResultsPage extends StatelessWidget {
   final List<Recipe> filteredRecipes;

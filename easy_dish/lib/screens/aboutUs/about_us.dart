@@ -11,8 +11,8 @@ class AboutUsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('About Us'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -23,10 +23,10 @@ class AboutUsPage extends StatelessWidget {
                 backgroundImage: NetworkImage('https://via.placeholder.com/100'), // Replace with your logo URL
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // Title
-            const Center(
+            Center(
               child: Text(
                 'About Us',
                 style: TextStyle(
@@ -35,41 +35,41 @@ class AboutUsPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // Description
-            const Text(
+            Text(
               'We are dedicated to providing the best recipes and cooking experiences for our users. '
               'Our app makes it easy to find, create, and share amazing dishes with loved ones. Whether you are a beginner '
               'or an experienced chef, we have something for everyone!',
               style: TextStyle(fontSize: 16),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // Contact Information
-            const Text(
+            Text(
               'Contact Us:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               'Email: info@yourapp.com',
               style: TextStyle(fontSize: 16),
             ),
-            const Text(
+            Text(
               'Phone: +123 456 7890',
               style: TextStyle(fontSize: 16),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // Social Media Links
-            const Text(
+            Text(
               'Follow Us:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Row(
-              children: const [
+              children: [
                 Icon(FontAwesomeIcons.facebook, color: Colors.blue),
                 SizedBox(width: 16),
                 Icon(FontAwesomeIcons.twitter, color: Colors.lightBlue),
