@@ -8,9 +8,23 @@ Drawer menuDrawer(BuildContext context) {
   return Drawer(
     backgroundColor: const Color(0xFFEFDCC3),
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Menu title at the top left
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
+          child: Text(
+            'Menu',
+            style: TextStyle(
+              color: Color(0xFF885B0E),
+              fontWeight: FontWeight.bold,
+              fontSize: 28,
+            ),
+          ),
+        ),
+        const Divider(color: Color(0xFF885B0E)), // Optional divider below title
         if (UserData.instance.isLoggedIn) ...[
-          const SizedBox(height: 60),
+          const SizedBox(height: 20),
           // Menu items for logged-in users
           ListTile(
             leading: const Icon(
@@ -104,21 +118,20 @@ Drawer menuDrawer(BuildContext context) {
               );
             },
           ),
-        ] else
-          ...[
-            // Menu for users who are not logged in
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text('Information'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AboutUsPage()),
-                );
-              },
-            ),
-          ],
+        ] else ...[
+          // Menu for users who are not logged in
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: const Text('Information'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutUsPage()),
+              );
+            },
+          ),
+        ],
       ],
     ),
   );

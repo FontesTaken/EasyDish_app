@@ -26,24 +26,24 @@ Expanded searchBar(BuildContext context) {
         child: TextField(
           controller: _searchController,
           decoration: InputDecoration(
-            prefixIconColor: const Color(0xFFEC9C1F),
+            prefixIconColor: Colors.deepOrange,
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
                 borderSide: const BorderSide(
-                  color: Color(0xFFEC9C1F),
+                  color: Colors.deepOrange,
                   width: 2.0,
                 )
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
               borderSide: const BorderSide(
-                color: Color(0xFFC28119),
+                color: Colors.deepOrange,
                 width: 2.0,
               ),
             ),
             hintText: 'Search...',
             hintStyle: const TextStyle(
-              color: Color(0xFFEC9C1F),
+              color: Colors.deepOrange,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),

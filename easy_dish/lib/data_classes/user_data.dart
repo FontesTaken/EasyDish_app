@@ -10,6 +10,11 @@ class UserData {
   String password;
   bool isLoggedIn;
 
+  String? profileImage;
+  String? backgroundImage;
+
+  // TODO recipe list, bookmark list, shopping list ?
+
   // Private constructor to prevent direct instantiation
   UserData._privateConstructor({
     required this.email,
@@ -20,6 +25,8 @@ class UserData {
     required this.experience,
     required this.password,
     required this.isLoggedIn,
+    required this.backgroundImage,
+    required this.profileImage,
   });
 
 
@@ -38,6 +45,8 @@ class UserData {
       favoriteIngredients: "Tell us your favorite ingredients...",
       experience: "Undisclosed", password: '',
       isLoggedIn: false,
+      profileImage: null,
+      backgroundImage: null,
     );
     return _instance!;
   }
@@ -50,7 +59,10 @@ class UserData {
     String? preferences,
     String? favoriteIngredients,
     String? experience,
-    required String password
+    required String password,
+    String? profileImage,
+    String? backgroundImage,
+
   }) {
     _instance = UserData._privateConstructor(
         email: email,
@@ -59,7 +71,10 @@ class UserData {
         preferences: preferences ?? "Write your preferences...",
         favoriteIngredients: favoriteIngredients ?? "Tell us your favorite ingredients...",
         experience: experience ?? "Undisclosed",
-        password: password, isLoggedIn: true
+        password: password, isLoggedIn: true,
+        profileImage: profileImage ?? null,
+        backgroundImage: backgroundImage ?? null,
+
       );
   }
 

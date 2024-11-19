@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/data_classes/user_data.dart'; // Import the UserData singleton
+import 'package:flutter_app_test/data_classes/user_data.dart';
+import 'package:flutter_app_test/screens/profile/profile_edit.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -46,7 +49,7 @@ class ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.orange.withOpacity(0.1),
+        color: Colors.orange.withOpacity(0.19),
         child: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -67,7 +70,12 @@ class ProfilePageState extends State<ProfilePage> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(
+                          child: UserData.instance.backgroundImage != null
+                              ? Image.file(
+                            File(UserData.instance.backgroundImage!),
+                            fit: BoxFit.cover,
+                          )
+                              : Image.asset(
                             "assets/meal_default_img.jpg",
                             fit: BoxFit.cover,
                           ),
@@ -78,7 +86,7 @@ class ProfilePageState extends State<ProfilePage> {
                         top: 16, // Position from the top
                         right: 16, // Position from the right
                         child: CircleAvatar(
-                          backgroundColor: Colors.orangeAccent,
+                          backgroundColor: Colors.deepOrange,
                           radius: 24,
                           child: IconButton(
                             icon: const Icon(
@@ -86,12 +94,15 @@ class ProfilePageState extends State<ProfilePage> {
                               color: Colors.white,
                             ),
                             onPressed: () {
-                              // Handle the edit button press here
-                              // TODO edit profile screen
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const EditProfilePage()),
+                              );
                             },
                           ),
                         ),
                       ),
+
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -102,17 +113,25 @@ class ProfilePageState extends State<ProfilePage> {
                     children: [
                       // Profile Picture
                       Container(
-                        height: 130,
-                        width: 130,
+                        height: 150,
+                        width: 150,
                         decoration: BoxDecoration(
                           color: Colors.orange.withOpacity(0.7),
                           borderRadius: BorderRadius.circular(12),
+                          image: UserData.instance.profileImage != null
+                              ? DecorationImage(
+                            image: FileImage(File(UserData.instance.profileImage!)),
+                            fit: BoxFit.cover,
+                          )
+                              : null,
                         ),
-                        child: const Icon(
+                        child: UserData.instance.profileImage == null
+                            ? const Icon(
                           Icons.account_circle,
                           size: 50,
                           color: Colors.white,
-                        ),
+                        )
+                            : null,
                       ),
                       const SizedBox(width: 10),
                       // Name, Email, and Experience
@@ -123,8 +142,8 @@ class ProfilePageState extends State<ProfilePage> {
                           Text(
                             userName,
                             style: const TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.w700,
+                              fontSize: 26,
+                              fontWeight: FontWeight.w800,
                               color: Colors.deepOrange,
                             ),
                           ),
@@ -134,7 +153,7 @@ class ProfilePageState extends State<ProfilePage> {
                             userEmail,
                             style: const TextStyle(
                               fontSize: 15,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               color: Colors.black54, // Slightly grayish color
                             ),
                           ),
@@ -145,7 +164,7 @@ class ProfilePageState extends State<ProfilePage> {
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w800,
-                              color: Colors.orangeAccent,
+                              color: Color(0x7C600700),
                             ),
                           ),
                         ],
@@ -159,24 +178,24 @@ class ProfilePageState extends State<ProfilePage> {
                     description,
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 24),
 
                   // Recipes Section
                   const Divider(
-                    color: Colors.orangeAccent,
+                    color: Colors.deepOrange,
                     thickness: 1,
                   ),
                   const SizedBox(height: 8),
                   const Text(
                     "Recipes",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.orange,
+                      color: Color(0xA8820A00),
                     ),
                   ),
                   const SizedBox(height: 8),
