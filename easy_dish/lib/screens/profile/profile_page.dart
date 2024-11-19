@@ -142,7 +142,7 @@ class ProfilePageState extends State<ProfilePage> {
                           Text(
                             userName,
                             style: const TextStyle(
-                              fontSize: 26,
+                              fontSize: 24,
                               fontWeight: FontWeight.w800,
                               color: Colors.deepOrange,
                             ),
@@ -152,7 +152,7 @@ class ProfilePageState extends State<ProfilePage> {
                           Text(
                             userEmail,
                             style: const TextStyle(
-                              fontSize: 15,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                               color: Colors.black54, // Slightly grayish color
                             ),
@@ -163,7 +163,7 @@ class ProfilePageState extends State<ProfilePage> {
                             "Experience: $experienceLevel",
                             style: const TextStyle(
                               fontSize: 16,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.w700,
                               color: Color(0x7C600700),
                             ),
                           ),
