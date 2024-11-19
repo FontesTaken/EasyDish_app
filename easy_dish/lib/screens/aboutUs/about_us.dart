@@ -1,4 +1,3 @@
-// about_us.dart
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -8,77 +7,124 @@ class AboutUsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('About Us'),
-      ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Standard AppBar height
+        child: Stack(
           children: [
-            // Image at the top
-            Center(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage('https://via.placeholder.com/100'), // Replace with your logo URL
-              ),
+            // Orange background with opacity for the AppBar
+            Container(
+              height: kToolbarHeight,
+              color: Colors.orange.withOpacity(0.20),
             ),
-            SizedBox(height: 16),
-
-            // Title
-            Center(
-              child: Text(
+            // The content of the AppBar (title)
+            AppBar(
+              backgroundColor: Colors.transparent, // Make the AppBar background transparent
+              elevation: 0, // Remove the shadow for a cleaner look
+              title: const Text(
                 'About Us',
                 style: TextStyle(
-                  fontSize: 24,
+                  color: Color(0xFFC08019),
                   fontWeight: FontWeight.bold,
+                  fontSize: 28,
                 ),
               ),
-            ),
-            SizedBox(height: 16),
-
-            // Description
-            Text(
-              'We are dedicated to providing the best recipes and cooking experiences for our users. '
-              'Our app makes it easy to find, create, and share amazing dishes with loved ones. Whether you are a beginner '
-              'or an experienced chef, we have something for everyone!',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
-
-            // Contact Information
-            Text(
-              'Contact Us:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Email: info@yourapp.com',
-              style: TextStyle(fontSize: 16),
-            ),
-            Text(
-              'Phone: +123 456 7890',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
-
-            // Social Media Links
-            Text(
-              'Follow Us:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Icon(FontAwesomeIcons.facebook, color: Colors.blue),
-                SizedBox(width: 16),
-                Icon(FontAwesomeIcons.twitter, color: Colors.lightBlue),
-                SizedBox(width: 16),
-                Icon(FontAwesomeIcons.instagram, color: Colors.pink),
-              ],
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                color: Color(0xFFC08019), // Set the back arrow color to bright red
+                onPressed: () {
+                  Navigator.pop(context); // Navigate back when pressed
+                },
+              ),
             ),
           ],
         ),
+      ),
+      body: Stack(
+        children: [
+          // Orange background with opacity
+          Container(
+            color: Colors.orange.withOpacity(0.19),
+          ),
+          // Main content with white background
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Image at the top, replaced with a regular square image
+                  Center(
+                    child: Image.asset(
+                      'logo_transp.png', // Displaying the image as a regular square
+                      width: 100, // Set width and height for the square image
+                      height: 100,
+                      fit: BoxFit.cover, // Make sure the image fits nicely
+                    ),
+                  ),
+                  SizedBox(height: 16),
+
+                  // Title
+                  Center(
+                    child: Text(
+                      'The EasyDish Team',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Color(0xFF885B0E),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+
+                  // Description
+                  Text(
+                    'We are dedicated to providing the best recipes and cooking experiences for our users. '
+                        'Our app makes it easy to find, create, and share amazing dishes with loved ones. Whether you are a beginner '
+                        'or an experienced chef, we have something for everyone!',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF885B0E),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+
+                  // Contact Information
+                  Text(
+                    'Contact Us:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF885B0E)),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Email: info@yourapp.com',
+                    style: TextStyle(fontSize: 16, color: Color(0xFF885B0E)),
+                  ),
+                  Text(
+                    'Phone: +123 456 7890',
+                    style: TextStyle(fontSize: 16, color: Color(0xFF885B0E)),
+                  ),
+                  SizedBox(height: 16),
+
+                  // Social Media Links
+                  Text(
+                    'Follow Us:',
+                    style: TextStyle(fontSize: 18, color: Color(0xFF885B0E), fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(FontAwesomeIcons.facebook, color: Colors.blue),
+                      SizedBox(width: 16),
+                      Icon(FontAwesomeIcons.twitter, color: Colors.lightBlue),
+                      SizedBox(width: 16),
+                      Icon(FontAwesomeIcons.instagram, color: Colors.pink),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
