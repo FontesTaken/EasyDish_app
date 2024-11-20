@@ -1,5 +1,6 @@
 // rate_recipe_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/data_classes/user_data.dart';
 import '../../data_classes/comment.dart';
 
 class RateRecipePage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _RateRecipePageState extends State<RateRecipePage> {
   void submitReview() {
     if (selectedRating > 0) {
       final newComment = Comment(
-        username: 'Anonymous', // Replace this with actual user data if available
+        username: UserData.instance.isLoggedIn ? UserData.instance.name : "Anonymous",
         rating: selectedRating,
         text: commentController.text,
       );
