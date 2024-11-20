@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../data_classes/user_data.dart';
 import '../../aboutUs/about_us.dart';
 import '../../guest/enter_app_options.dart';
+import '../../recipe/create_recipe_page.dart';
 
 Drawer menuDrawer(BuildContext context) {
   return Drawer(
@@ -32,8 +33,7 @@ Drawer menuDrawer(BuildContext context) {
               size: 30,
               color: Color(0xFF885B0E),
             ),
-            title: const Text(
-                'Bookmarks',
+            title: const Text('Bookmarks',
                 style: TextStyle(
                   color: Color(0xFFC28119),
                   fontWeight: FontWeight.bold,
@@ -44,30 +44,27 @@ Drawer menuDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: const Icon(
-                Icons.add,
-                size: 30,
-                color: Color(0xFF885B0E)
-            ),
-            title: const Text(
-                'Create Recipe',
+            leading: const Icon(Icons.add, size: 30, color: Color(0xFF885B0E)),
+            title: const Text('Create Recipe',
                 style: TextStyle(
                   color: Color(0xFFC28119),
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
                 )),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CreateRecipePage(),
+                ),
+              );
             },
           ),
           ListTile(
-            leading: const Icon(
-                Icons.list_alt,
-                size: 30,
-                color: Color(0xFF885B0E)
-            ),
-            title: const Text(
-                'My Recipes',
+            leading:
+                const Icon(Icons.list_alt, size: 30, color: Color(0xFF885B0E)),
+            title: const Text('My Recipes',
                 style: TextStyle(
                   color: Color(0xFFC28119),
                   fontWeight: FontWeight.bold,
@@ -80,8 +77,7 @@ Drawer menuDrawer(BuildContext context) {
           const Spacer(),
           const Divider(color: Color(0xFF885B0E)),
           ListTile(
-            title: const Text(
-                'About Us',
+            title: const Text('About Us',
                 style: TextStyle(
                   color: Color(0xFFC28119),
                   fontWeight: FontWeight.bold,
@@ -96,13 +92,9 @@ Drawer menuDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: const Icon(
-                Icons.logout,
-                size: 30,
-                color: Color(0xFF885B0E)
-            ),
-            title: const Text(
-                'Log Out',
+            leading:
+                const Icon(Icons.logout, size: 30, color: Color(0xFF885B0E)),
+            title: const Text('Log Out',
                 style: TextStyle(
                   color: Color(0xFFC28119),
                   fontWeight: FontWeight.bold,
@@ -114,7 +106,7 @@ Drawer menuDrawer(BuildContext context) {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-                    (route) => false,
+                (route) => false,
               );
             },
           ),

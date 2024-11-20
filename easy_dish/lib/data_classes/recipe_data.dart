@@ -5,6 +5,7 @@ import 'comment.dart';
 class RecipeData {
   static final List<Recipe> recipes = [
     Recipe(
+      createdBy: 'Admin',
       name: 'Spaghetti Bolognese',
       tags: ['Easy', 'Italian', 'Pasta', 'Non-Vegetarian'],
       imageUrl: 'https://biodharma.pt/wp-content/uploads/2020/05/esprguete-%C3%A0-bolonhesa-1.jpg',
@@ -36,6 +37,7 @@ class RecipeData {
       ],
     ),
     Recipe(
+      createdBy: 'Admin',
       name: 'Duck Rice',
       tags: ['Medium', 'Portuguese', 'Non-Vegetarian', 'Rice'],
       imageUrl: 'https://www.pingodoce.pt/wp-content/uploads/2016/12/arroz-de-pato.jpeg',
@@ -67,6 +69,7 @@ class RecipeData {
       ],
     ),
     Recipe(
+      createdBy: 'Admin',
       name: 'Tacos',
       tags: ['Easy', 'Mexican', 'Quick', 'Non-Vegetarian'],
       imageUrl: 'https://static.itdg.com.br/images/640-400/763a97fad5636232d9ffe30955b44acf/347923-original.jpg',
@@ -94,6 +97,7 @@ class RecipeData {
       ],
     ),
     Recipe(
+      createdBy: 'Admin',
       name: 'Sushi',
       tags: ['Hard', 'Japanese', 'Non-Cook', 'Seafood'],
       imageUrl: 'https://newinsetubal.nit.pt/wp-content/uploads/2021/02/966dfd70677956dbff0f8f1ee297dccf-754x394.jpg',
@@ -124,6 +128,7 @@ class RecipeData {
       ],
     ),
     Recipe(
+      createdBy: 'Admin',
       name: 'Greek Salad',
       tags: ['Easy', 'Greek', 'Vegetarian', 'Gluten-Free', 'Healthy'],
       imageUrl: 'https://img.taste.com.au/tVTiV0Os/w720-h480-cfill-q80/taste/2016/11/super-easy-greek-salad-81664-1.jpeg',
@@ -153,6 +158,7 @@ class RecipeData {
       ],
     ),
     Recipe(
+      createdBy: 'Admin',
       name: 'Butter Chicken',
       tags: ['Medium', 'Indian', 'Non-Vegetarian', 'Spicy'],
       imageUrl: 'https://saltedmint.com/wp-content/uploads/2024/01/Authentic-Indian-Butter-Chicken-recipe.jpg',

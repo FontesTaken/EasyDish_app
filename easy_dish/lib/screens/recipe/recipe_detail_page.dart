@@ -26,8 +26,11 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   @override
   void initState() {
     super.initState();
-    stepCompletionStatus = List.generate(widget.recipe.steps.length, (index) => false);
-    stepTimers = widget.recipe.steps.map((step) => step.timer != null ? step.timer! * 60 : null).toList();
+    stepCompletionStatus =
+        List.generate(widget.recipe.steps.length, (index) => false);
+    stepTimers = widget.recipe.steps
+        .map((step) => step.timer)
+        .toList(); //Tive que mudar isto !!!!!! sdonawsdiofniwfniweniwernewpr
     activeTimers = List.generate(widget.recipe.steps.length, (index) => null);
 
     // Check if the recipe is already bookmarked
@@ -109,163 +112,167 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
     return Container(
         color: Colors.white, // Base color to prevent blending issues
         child: Scaffold(
-            backgroundColor: Colors.orange.withOpacity(0.19),
-            appBar: AppBar(
-              scrolledUnderElevation: 0,
-              backgroundColor: Colors.orange.withOpacity(0.01),
-              title: Text(
-                  widget.recipe.name,
-                  style: TextStyle(
-                    color: Color(0xFFC08019),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  )),
-              actions: [
-                IconButton(
-                  icon: Icon(isBookmarked ? Icons.bookmark : Icons.bookmark_border),
-                  color: const Color(0xFF885B0E),
-                  onPressed: toggleBookmark,
+          backgroundColor: Colors.orange.withOpacity(0.19),
+          appBar: AppBar(
+            scrolledUnderElevation: 0,
+            backgroundColor: Colors.orange.withOpacity(0.01),
+            title: Text(widget.recipe.name,
+                style: TextStyle(
+                  color: Color(0xFFC08019),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                )),
+            actions: [
+              IconButton(
+                icon:
+                    Icon(isBookmarked ? Icons.bookmark : Icons.bookmark_border),
+                color: const Color(0xFF885B0E),
+                onPressed: toggleBookmark,
+              ),
+              IconButton(
+                icon: const Icon(Icons.comment),
+                color: const Color(0xFF885B0E),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          CommentsPage(comments: widget.recipe.comments),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Center(
+                    child: Image.network(
+                      widget.recipe.imageUrl,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.comment),
-                  color: const Color(0xFF885B0E),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CommentsPage(comments: widget.recipe.comments),
-                      ),
-                    );
-                  },
+                const SizedBox(height: 16),
+                const SizedBox(height: 8),
+                Text(widget.recipe.description,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFF885B0E),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    )),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 8.0,
+                  children: widget.recipe.tags
+                      .map((tag) => TagWidget(text: tag))
+                      .toList(),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Created By: ${widget.recipe.createdBy}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF885B0E),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                ...widget.recipe.ingredients
+                    .map((ingredient) => Text(
+                        '- ${ingredient.name}: ${ingredient.getAdjustedQuantity(widget.recipe.servings, widget.recipe.defaultServings)} ${ingredient.unit}',
+                        style: TextStyle(
+                          fontSize: 1,
+                          color: Color(0xFF885B0E),
+                          fontWeight: FontWeight.bold,
+                        )))
+                    .toList(),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    const Text('Servings:',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xFF754F0D),
+                          fontWeight: FontWeight.bold,
+                        )),
+                    IconButton(
+                      icon: const Icon(Icons.remove_circle_outline),
+                      onPressed: () {
+                        setState(() {
+                          if (widget.recipe.servings > 1) {
+                            widget.recipe.servings--;
+                          }
+                        });
+                      },
+                    ),
+                    Text('${widget.recipe.servings}'),
+                    IconButton(
+                      icon: const Icon(Icons.add_circle_outline),
+                      onPressed: () {
+                        setState(() {
+                          widget.recipe.servings++;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const Text('Steps:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF754F0D),
+                      fontWeight: FontWeight.bold,
+                    )),
+                ...widget.recipe.steps.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  RecipeStep step = entry.value;
+                  bool isCompleted = stepCompletionStatus[index];
+                  bool hasTimer = step.timer != null;
+                  bool isTimerActive = activeTimers[index] != null;
+
+                  return ListTile(
+                    leading: Checkbox(
+                        value: isCompleted,
+                        onChanged: (_) => toggleStepCompletion(index)),
+                    title: Text(
+                      step.description,
+                      style: TextStyle(
+                          decoration: isCompleted
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none),
+                    ),
+                    subtitle: hasTimer
+                        ? Row(
+                            children: [
+                              Text(
+                                  'Time left: ${formatTime(stepTimers[index] ?? 0)}'),
+                              const SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: () => toggleTimer(index),
+                                child: Text(isTimerActive
+                                    ? 'Stop Timer'
+                                    : 'Start Timer'),
+                              ),
+                            ],
+                          )
+                        : null,
+                  );
+                }).toList(),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: navigateToRateRecipe,
+                  child: const Text('Rate Recipe'),
                 ),
               ],
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Center(
-                      child: Image.network(
-                        widget.recipe.imageUrl,
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const SizedBox(height: 8),
-                  Text(
-                      widget.recipe.description,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xFF885B0E),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      )
-                  ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 8.0,
-                    children: widget.recipe.tags.map((tag) => TagWidget(text: tag)).toList(),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                      'Ingredients:',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color(0xFF754F0D),
-                        fontWeight: FontWeight.bold,
-                      )
-                  ),
-                  ...widget.recipe.ingredients.map((ingredient) =>
-                      Text(
-                          '- ${ingredient.name}: ${ingredient.getAdjustedQuantity(widget.recipe.servings, widget.recipe.defaultServings)} ${ingredient.unit}',
-                          style: TextStyle(
-                            fontSize: 1,
-                            color: Color(0xFF885B0E),
-                            fontWeight: FontWeight.bold,
-                          )
-                      )).toList(),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      const Text(
-                          'Servings:',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0xFF754F0D),
-                            fontWeight: FontWeight.bold,
-                          )
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.remove_circle_outline),
-                        onPressed: () {
-                          setState(() {
-                            if (widget.recipe.servings > 1) {
-                              widget.recipe.servings--;
-                            }
-                          });
-                        },
-                      ),
-                      Text('${widget.recipe.servings}'),
-                      IconButton(
-                        icon: const Icon(Icons.add_circle_outline),
-                        onPressed: () {
-                          setState(() {
-                            widget.recipe.servings++;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                      'Steps:',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color(0xFF754F0D),
-                        fontWeight: FontWeight.bold,
-                      )
-                  ),
-                  ...widget.recipe.steps.asMap().entries.map((entry) {
-                    int index = entry.key;
-                    RecipeStep step = entry.value;
-                    bool isCompleted = stepCompletionStatus[index];
-                    bool hasTimer = step.timer != null;
-                    bool isTimerActive = activeTimers[index] != null;
-
-                    return ListTile(
-                      leading: Checkbox(value: isCompleted, onChanged: (_) => toggleStepCompletion(index)),
-                      title: Text(
-                        step.description,
-                        style: TextStyle(decoration: isCompleted ? TextDecoration.lineThrough : TextDecoration.none),
-                      ),
-                      subtitle: hasTimer
-                          ? Row(
-                              children: [
-                                Text('Time left: ${formatTime(stepTimers[index] ?? 0)}'),
-                                const SizedBox(width: 10),
-                                ElevatedButton(
-                                  onPressed: () => toggleTimer(index),
-                                  child: Text(isTimerActive ? 'Stop Timer' : 'Start Timer'),
-                                ),
-                              ],
-                            )
-                          : null,
-                    );
-                  }).toList(),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: navigateToRateRecipe,
-                    child: const Text('Rate Recipe'),
-                  ),
-                ],
-              ),
-            ),
-          )
-    );
+          ),
+        ));
   }
 }

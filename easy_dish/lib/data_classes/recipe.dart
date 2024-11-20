@@ -13,6 +13,7 @@ class Recipe {
   final List<RecipeStep> steps;
   final List<Ingredient> ingredients;
   final List<Comment> comments; // Add this field to hold comments
+  final String createdBy;
 
   Recipe({
     required this.name,
@@ -24,6 +25,8 @@ class Recipe {
     required this.steps,
     required this.ingredients,
     this.comments = const [], // Default to an empty list if no comments
+    required this.createdBy, // Make this required
+
   });
 }
 

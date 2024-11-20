@@ -1,6 +1,5 @@
 // lib/data_classes/user_data.dart
 class UserData {
-
   String? email;
   String name;
   String aboutMe;
@@ -12,6 +11,8 @@ class UserData {
 
   String? profileImage;
   String? backgroundImage;
+
+  List<String> createdRecipes;
 
   // TODO recipe list, bookmark list, shopping list ?
 
@@ -27,8 +28,8 @@ class UserData {
     required this.isLoggedIn,
     required this.backgroundImage,
     required this.profileImage,
+    this.createdRecipes = const [],
   });
-
 
   // TODO warning: the user class will only be a singleton for now
 
@@ -43,10 +44,12 @@ class UserData {
       aboutMe: "Write about yourself...",
       preferences: "Write your preferences...",
       favoriteIngredients: "Tell us your favorite ingredients...",
-      experience: "Undisclosed", password: '',
+      experience: "Undisclosed",
+      password: '',
       isLoggedIn: false,
       profileImage: null,
       backgroundImage: null,
+      createdRecipes: [],
     );
     return _instance!;
   }
@@ -62,20 +65,22 @@ class UserData {
     required String password,
     String? profileImage,
     String? backgroundImage,
-
+    List<String>? createdRecipes,
   }) {
     _instance = UserData._privateConstructor(
-        email: email,
-        name: name,
-        aboutMe: aboutMe ?? "Write about yourself...",
-        preferences: preferences ?? "Write your preferences...",
-        favoriteIngredients: favoriteIngredients ?? "Tell us your favorite ingredients...",
-        experience: experience ?? "Undisclosed",
-        password: password, isLoggedIn: true,
-        profileImage: profileImage ?? null,
-        backgroundImage: backgroundImage ?? null,
-
-      );
+      email: email,
+      name: name,
+      aboutMe: aboutMe ?? "Write about yourself...",
+      preferences: preferences ?? "Write your preferences...",
+      favoriteIngredients:
+          favoriteIngredients ?? "Tell us your favorite ingredients...",
+      experience: experience ?? "Undisclosed",
+      password: password,
+      isLoggedIn: true,
+      profileImage: profileImage ?? null,
+      backgroundImage: backgroundImage ?? null,
+      createdRecipes: createdRecipes ?? [],
+    );
   }
 
   // Method to reset the UserData
@@ -85,5 +90,9 @@ class UserData {
 
   String getUserInfo() {
     return 'Email: $email, Name: $name';
+  }
+
+  void addRecipe(String recipeName) {
+    createdRecipes.add(recipeName);
   }
 }
