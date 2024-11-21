@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'add_steps_page.dart';
-import "/../data_classes/recipe.dart";
+import '../../data_classes/recipe.dart';
 
 class CreateRecipePage extends StatefulWidget {
   const CreateRecipePage({super.key});
@@ -15,7 +17,19 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
   final List<String> tags = [];
   final List<Ingredient> ingredients = [];
   int servings = 2;
-  String? recipeImage; // Placeholder for recipe image
+  File? recipeImage; // Store the picked image file
+  final ImagePicker _picker = ImagePicker(); // Initialize the ImagePicker
+
+  // Function to pick an image
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        recipeImage = File(pickedFile.path);
+      });
+    }
+  }
 
   // Function to add a tag
   void _addTag() async {
@@ -133,14 +147,6 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
     );
   }
 
-  // Function to pick an image (dummy for now)
-  void _pickImage() {
-    // Placeholder for picking an image
-    setState(() {
-      recipeImage = "https://via.placeholder.com/150"; // Temporary placeholder
-    });
-  }
-
   // Navigate to the next page
   void _goToNextPage() {
     if (recipeNameController.text.isEmpty || ingredients.isEmpty) {
@@ -155,7 +161,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
       context,
       MaterialPageRoute(
         builder: (context) => AddStepsPage(
-          recipeImage: recipeImage,
+          recipeImage: recipeImage?.path, // Pass the image file path
           recipeName: recipeNameController.text,
           description: descriptionController.text,
           tags: tags,
@@ -166,7 +172,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
     );
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -184,15 +190,25 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
           children: [
             GestureDetector(
               onTap: _pickImage,
-              child: recipeImage == null
-                  ? Container(
-                      height: 150,
-                      width: double.infinity,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.camera_alt, size: 50),
-                    )
-                  : Image.network(recipeImage!,
-                      height: 150, width: double.infinity, fit: BoxFit.cover),
+              child: Container(
+                height: 150,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(12),
+                  image: recipeImage != null
+                      ? DecorationImage(
+                          image: FileImage(recipeImage!),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
+                ),
+                child: recipeImage == null
+                    ? const Center(
+                        child: Icon(Icons.camera_alt, size: 50),
+                      )
+                    : null,
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -215,9 +231,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Tags:",
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text("Tags:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ElevatedButton(onPressed: _addTag, child: const Text("Add")),
               ],
             ),
@@ -228,9 +242,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
             const SizedBox(height: 16),
             Row(
               children: [
-                const Text("Servings:",
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text("Servings:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 IconButton(
                   onPressed: () {
                     if (servings > 1) {
@@ -256,11 +268,8 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Ingredients:",
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ElevatedButton(
-                    onPressed: _addIngredient, child: const Text("Add")),
+                const Text("Ingredients:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                ElevatedButton(onPressed: _addIngredient, child: const Text("Add")),
               ],
             ),
             ...ingredients.map((ingredient) {
