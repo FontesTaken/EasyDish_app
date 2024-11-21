@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/data_classes/user_data.dart';
+import 'package:flutter_app_test/data_classes/recipe_data.dart';
+import 'package:flutter_app_test/data_classes/recipe.dart';
 import 'package:flutter_app_test/screens/profile/profile_edit.dart';
+import 'package:flutter_app_test/screens/recipe/recipe_detail_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,15 +15,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-
-  final List<String> recipes = [
-    "Spaghetti Bolognese",
-    "Chicken Alfredo",
-    "Vegan Tacos",
-    "Chocolate Cake",
-    "Grilled Cheese Sandwich",
-    "Caesar Salad",
-  ];
+  late List<Recipe> userRecipes;
 
   String userName = '';
   String userEmail = '';
@@ -30,19 +25,34 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-
-    // Load user data from the UserData singleton when the page is loaded
+    // Load user data and fetch the user's recipes when the page is loaded
     _loadUserData();
   }
 
-  // Function to load user data from the singleton
+  // Function to load user data and fetch recipes based on "createdRecipes"
   void _loadUserData() {
     setState(() {
       userName = UserData.instance.name ?? 'No Name';
       userEmail = UserData.instance.email ?? 'No Email';
       description = UserData.instance.aboutMe ?? 'No Description';
       experienceLevel = UserData.instance.experience ?? 'No Experience Level';
+
+      // Get recipes based on the createdRecipes list
+      userRecipes = RecipeData.recipes
+          .where((recipe) =>
+              UserData.instance.createdRecipes.contains(recipe.name))
+          .toList();
     });
+  }
+
+  // Navigate to the recipe detail page
+  void _navigateToRecipeDetail(Recipe recipe) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RecipeDetailPage(recipe: recipe),
+      ),
+    );
   }
 
   @override
@@ -72,13 +82,13 @@ class ProfilePageState extends State<ProfilePage> {
                           borderRadius: BorderRadius.circular(16),
                           child: UserData.instance.backgroundImage != null
                               ? Image.file(
-                            File(UserData.instance.backgroundImage!),
-                            fit: BoxFit.cover,
-                          )
+                                  File(UserData.instance.backgroundImage!),
+                                  fit: BoxFit.cover,
+                                )
                               : Image.asset(
-                            "assets/meal_default_img.jpg",
-                            fit: BoxFit.cover,
-                          ),
+                                  "assets/meal_default_img.jpg",
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
                       // Edit Button
@@ -96,13 +106,14 @@ class ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const EditProfilePage()),
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const EditProfilePage()),
                               );
                             },
                           ),
                         ),
                       ),
-
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -120,17 +131,18 @@ class ProfilePageState extends State<ProfilePage> {
                           borderRadius: BorderRadius.circular(12),
                           image: UserData.instance.profileImage != null
                               ? DecorationImage(
-                            image: FileImage(File(UserData.instance.profileImage!)),
-                            fit: BoxFit.cover,
-                          )
+                                  image: FileImage(
+                                      File(UserData.instance.profileImage!)),
+                                  fit: BoxFit.cover,
+                                )
                               : null,
                         ),
                         child: UserData.instance.profileImage == null
                             ? const Icon(
-                          Icons.account_circle,
-                          size: 50,
-                          color: Colors.white,
-                        )
+                                Icons.account_circle,
+                                size: 50,
+                                color: Colors.white,
+                              )
                             : null,
                       ),
                       const SizedBox(width: 10),
@@ -200,29 +212,45 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 8),
 
-                  // Recipes List (You can keep this static as you mentioned)
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: recipes.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          recipes[index],
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
+                  // Recipes List (Dynamic based on createdRecipes)
+                  userRecipes.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: userRecipes.length,
+                          itemBuilder: (context, index) {
+                            final recipe = userRecipes[index];
+                            return GestureDetector(
+                              onTap: () => _navigateToRecipeDetail(recipe),
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.withOpacity(0.6),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  recipe.name,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : const Center(
+                          child: Text(
+                            "No recipes created yet.",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
-                      );
-                    },
-                  ),
                 ],
               ),
             ),
