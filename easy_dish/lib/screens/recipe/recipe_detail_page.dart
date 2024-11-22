@@ -1,5 +1,6 @@
 // recipe_detail_page.dart
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../data_classes/recipe.dart';
@@ -25,7 +26,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   List<int?> stepTimers = [];
   List<Timer?> activeTimers = [];
   bool isBookmarked = false;
-
 
   void navigateToRateRecipe() {
     Navigator.push(
@@ -55,7 +55,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
     isBookmarked = BookmarkManager().isBookmarked(widget.recipe);
   }
 
-
   Future<void> loadTimerState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -68,7 +67,9 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
 
         if (savedTime != null) {
           if (startTime != null) {
-            int elapsed = DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(startTime)).inSeconds;
+            int elapsed = DateTime.now()
+                .difference(DateTime.fromMillisecondsSinceEpoch(startTime))
+                .inSeconds;
             int remainingTime = savedTime - elapsed;
             if (remainingTime > 0) {
               startTimer(index, remainingTime);
@@ -92,7 +93,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
     if (value != null) {
       prefs.setInt(key, value);
       if (isTimerRunning) {
-        prefs.setInt('startTime ${widget.recipe.id} $index', DateTime.now().millisecondsSinceEpoch);
+        prefs.setInt('startTime ${widget.recipe.id} $index',
+            DateTime.now().millisecondsSinceEpoch);
       } else {
         prefs.remove('startTime ${widget.recipe.id} $index');
       }
@@ -127,7 +129,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
           timer.cancel();
           activeTimers[index] = null;
           saveTimerState(index, false);
-          sendNotification('Timer Completed', 'Step ${index + 1} of the recipe is done!');
+          sendNotification(
+              'Timer Completed', 'Step ${index + 1} of the recipe is done!');
         }
       });
     });
@@ -246,11 +249,29 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Center(
-                    child: Image.network(
-                      widget.recipe.imageUrl,
-                      height: 200,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: widget.recipe.imageUrl != null &&
+                              widget.recipe.imageUrl.isNotEmpty
+                          ? (widget.recipe.imageUrl.startsWith('http')
+                              ? Image.network(
+                                  widget.recipe.imageUrl,
+                                  height: 200,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.file(
+                                  File(widget.recipe.imageUrl),
+                                  height: 200,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ))
+                          : Image.asset(
+                              "assets/meal_default_img.jpg",
+                              height: 200,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                 ),
@@ -321,23 +342,18 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    const Text(
-                        'Steps:',
+                    const Text('Steps:',
                         style: TextStyle(
                           fontSize: 18,
                           color: Color(0xFF754F0D),
                           fontWeight: FontWeight.bold,
-                        )
-                    ),
+                        )),
                     const SizedBox(width: 16),
                     ElevatedButton(
                       onPressed: () => resetTimer(),
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFFFD095),
-                          elevation: 4
-                      ),
-                      child: Text(
-                          "Reset Timers",
+                          backgroundColor: Color(0xFFFFD095), elevation: 4),
+                      child: Text("Reset Timers",
                           style: TextStyle(
                             color: Color(0xFF885B0E),
                             fontWeight: FontWeight.bold,
@@ -367,19 +383,20 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                     subtitle: hasTimer
                         ? Row(
                             children: [
-                              if (index < stepTimers.length && stepTimers[index] != null) ...[
-                                Text('Time left: ${formatTime(
-                                    stepTimers[index] ?? 0)}'),
+                              if (index < stepTimers.length &&
+                                  stepTimers[index] != null) ...[
+                                Text(
+                                    'Time left: ${formatTime(stepTimers[index] ?? 0)}'),
                                 const SizedBox(width: 10),
                                 ElevatedButton(
                                   onPressed: () => toggleTimer(index),
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Color(0xFFFFD095),
-                                      elevation: 4
-                                  ),
-                                  child: Text(isTimerActive
-                                      ? 'Stop Timer'
-                                      : 'Start Timer',
+                                      elevation: 4),
+                                  child: Text(
+                                      isTimerActive
+                                          ? 'Stop Timer'
+                                          : 'Start Timer',
                                       style: TextStyle(
                                         color: Color(0xFF885B0E),
                                         fontWeight: FontWeight.bold,
@@ -396,11 +413,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                 ElevatedButton(
                   onPressed: navigateToRateRecipe,
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFFFD095),
-                      elevation: 4
-                  ),
-                  child: const Text(
-                      'Rate Recipe',
+                      backgroundColor: Color(0xFFFFD095), elevation: 4),
+                  child: const Text('Rate Recipe',
                       style: TextStyle(
                         color: Color(0xFF885B0E),
                         fontWeight: FontWeight.bold,
