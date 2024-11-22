@@ -7,7 +7,7 @@ class RecipeData {
     Recipe(
       id: 1,
       createdBy: 'Admin',
-      name: 'Spaghetti Bolognese',
+      name: 'Pasta Primavera',
       tags: ['Easy', 'Italian', 'Pasta', 'Non-Vegetarian'],
       imageUrl: 'https://biodharma.pt/wp-content/uploads/2020/05/esprguete-%C3%A0-bolonhesa-1.jpg',
       description: 'A classic Italian pasta dish with a rich, savory meat sauce.',
