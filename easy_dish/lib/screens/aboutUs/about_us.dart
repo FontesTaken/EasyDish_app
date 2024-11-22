@@ -11,14 +11,8 @@ class AboutUsPage extends StatelessWidget {
         preferredSize: Size.fromHeight(kToolbarHeight), // Standard AppBar height
         child: Stack(
           children: [
-            // Orange background with opacity for the AppBar
-            Container(
-              height: kToolbarHeight,
-              color: Colors.orange.withOpacity(0.20),
-            ),
-            // The content of the AppBar (title)
             AppBar(
-              backgroundColor: Colors.transparent, // Make the AppBar background transparent
+              backgroundColor: Colors.orange.withOpacity(0.2),
               elevation: 0, // Remove the shadow for a cleaner look
               title: const Text(
                 'About Us',
@@ -55,7 +49,7 @@ class AboutUsPage extends StatelessWidget {
                   // Image at the top, replaced with a regular square image
                   Center(
                     child: Image.asset(
-                      'logo_transp.png', // Displaying the image as a regular square
+                      'assets/logo_transp.png', // Displaying the image as a regular square
                       width: 100, // Set width and height for the square image
                       height: 100,
                       fit: BoxFit.cover, // Make sure the image fits nicely
