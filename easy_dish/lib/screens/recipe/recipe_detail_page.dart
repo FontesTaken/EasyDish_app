@@ -32,7 +32,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
       context,
       MaterialPageRoute(
         builder: (context) => RateRecipePage(
-          recipeName: widget.recipe.name,
+          recipe: widget.recipe,
           onSubmit: (comment) {
             setState(() {
               widget.recipe.comments.add(comment);
@@ -202,6 +202,13 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
         child: Scaffold(
           backgroundColor: Colors.orange.withOpacity(0.19),
           appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              color: Color(0xFFC08019),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             scrolledUnderElevation: 0,
             backgroundColor: Colors.orange.withOpacity(0.01),
             title: Text(widget.recipe.name,
@@ -325,7 +332,17 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                     const SizedBox(width: 16),
                     ElevatedButton(
                       onPressed: () => resetTimer(),
-                      child: Text("Reset Timers"),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFFD095),
+                          elevation: 4
+                      ),
+                      child: Text(
+                          "Reset Timers",
+                          style: TextStyle(
+                            color: Color(0xFF885B0E),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          )),
                     ),
                   ],
                 ),
@@ -356,9 +373,18 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                                 const SizedBox(width: 10),
                                 ElevatedButton(
                                   onPressed: () => toggleTimer(index),
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFFFFD095),
+                                      elevation: 4
+                                  ),
                                   child: Text(isTimerActive
                                       ? 'Stop Timer'
-                                      : 'Start Timer'),
+                                      : 'Start Timer',
+                                      style: TextStyle(
+                                        color: Color(0xFF885B0E),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      )),
                                 ),
                               ]
                             ],
@@ -369,7 +395,17 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: navigateToRateRecipe,
-                  child: const Text('Rate Recipe'),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFFFD095),
+                      elevation: 4
+                  ),
+                  child: const Text(
+                      'Rate Recipe',
+                      style: TextStyle(
+                        color: Color(0xFF885B0E),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      )),
                 ),
               ],
             ),
