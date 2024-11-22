@@ -80,7 +80,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
           return savedTime;
         }
 
-        return step.timer != null ? step.timer! * 60 : null;
+        return step.timer;
       }).toList();
     });
   }
@@ -156,8 +156,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
         prefs.remove('startTime ${widget.recipe.id} $index');
         prefs.remove('step ${widget.recipe.id} $index');
         if (step.timer != null) {
-          stepTimers[index] = widget.recipe.steps[index].timer! * 60;
-          return step.timer! * 60;
+          stepTimers[index] = widget.recipe.steps[index].timer;
+          return step.timer;
         } else {
           return null;
         }
