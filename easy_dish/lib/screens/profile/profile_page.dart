@@ -40,7 +40,7 @@ class ProfilePageState extends State<ProfilePage> {
       // Get recipes based on the createdRecipes list
       userRecipes = RecipeData.recipes
           .where((recipe) =>
-              UserData.instance.createdRecipes.contains(recipe.name))
+          UserData.instance.createdRecipes.contains(recipe.name))
           .toList();
     });
   }
@@ -57,10 +57,11 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: Colors.orange.withOpacity(0.19),
-        child: SafeArea(
+    return Container(
+      color: Colors.orange.withOpacity(0.19), // Background color for the entire screen
+      child: Scaffold(
+        backgroundColor: Colors.transparent, // Make scaffold background transparent
+        body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -82,13 +83,13 @@ class ProfilePageState extends State<ProfilePage> {
                           borderRadius: BorderRadius.circular(16),
                           child: UserData.instance.backgroundImage != null
                               ? Image.file(
-                                  File(UserData.instance.backgroundImage!),
-                                  fit: BoxFit.cover,
-                                )
+                            File(UserData.instance.backgroundImage!),
+                            fit: BoxFit.cover,
+                          )
                               : Image.asset(
-                                  "assets/meal_default_img.jpg",
-                                  fit: BoxFit.cover,
-                                ),
+                            "assets/meal_default_img.jpg",
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       // Edit Button
@@ -108,7 +109,7 @@ class ProfilePageState extends State<ProfilePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const EditProfilePage()),
+                                    const EditProfilePage()),
                               );
                             },
                           ),
@@ -131,18 +132,18 @@ class ProfilePageState extends State<ProfilePage> {
                           borderRadius: BorderRadius.circular(12),
                           image: UserData.instance.profileImage != null
                               ? DecorationImage(
-                                  image: FileImage(
-                                      File(UserData.instance.profileImage!)),
-                                  fit: BoxFit.cover,
-                                )
+                            image: FileImage(
+                                File(UserData.instance.profileImage!)),
+                            fit: BoxFit.cover,
+                          )
                               : null,
                         ),
                         child: UserData.instance.profileImage == null
                             ? const Icon(
-                                Icons.account_circle,
-                                size: 50,
-                                color: Colors.white,
-                              )
+                          Icons.account_circle,
+                          size: 50,
+                          color: Colors.white,
+                        )
                             : null,
                       ),
                       const SizedBox(width: 10),
@@ -215,42 +216,42 @@ class ProfilePageState extends State<ProfilePage> {
                   // Recipes List (Dynamic based on createdRecipes)
                   userRecipes.isNotEmpty
                       ? ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: userRecipes.length,
-                          itemBuilder: (context, index) {
-                            final recipe = userRecipes[index];
-                            return GestureDetector(
-                              onTap: () => _navigateToRecipeDetail(recipe),
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.6),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  recipe.name,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        )
-                      : const Center(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: userRecipes.length,
+                    itemBuilder: (context, index) {
+                      final recipe = userRecipes[index];
+                      return GestureDetector(
+                        onTap: () => _navigateToRecipeDetail(recipe),
+                        child: Container(
+                          margin:
+                          const EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           child: Text(
-                            "No recipes created yet.",
-                            style: TextStyle(
+                            recipe.name,
+                            style: const TextStyle(
                               fontSize: 16,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
                             ),
                           ),
                         ),
+                      );
+                    },
+                  )
+                      : const Center(
+                    child: Text(
+                      "No recipes created yet.",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
