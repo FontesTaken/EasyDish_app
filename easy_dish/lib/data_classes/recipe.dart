@@ -4,6 +4,7 @@ import 'comment.dart';
 
 
 class Recipe {
+  final int id;
   final String name;
   final List<String> tags;
   final String imageUrl;
@@ -16,6 +17,7 @@ class Recipe {
   final String createdBy;
 
   Recipe({
+    required this.id,
     required this.name,
     required this.tags,
     required this.imageUrl,

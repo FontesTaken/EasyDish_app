@@ -5,6 +5,7 @@ import 'comment.dart';
 class RecipeData {
   static final List<Recipe> recipes = [
     Recipe(
+      id: 1,
       createdBy: 'Admin',
       name: 'Spaghetti Bolognese',
       tags: ['Easy', 'Italian', 'Pasta', 'Non-Vegetarian'],
@@ -37,6 +38,7 @@ class RecipeData {
       ],
     ),
     Recipe(
+      id: 2,
       createdBy: 'Admin',
       name: 'Duck Rice',
       tags: ['Medium', 'Portuguese', 'Non-Vegetarian', 'Rice'],
@@ -69,6 +71,7 @@ class RecipeData {
       ],
     ),
     Recipe(
+      id: 3,
       createdBy: 'Admin',
       name: 'Tacos',
       tags: ['Easy', 'Mexican', 'Quick', 'Non-Vegetarian'],
@@ -97,6 +100,7 @@ class RecipeData {
       ],
     ),
     Recipe(
+      id: 4,
       createdBy: 'Admin',
       name: 'Sushi',
       tags: ['Hard', 'Japanese', 'Non-Cook', 'Seafood'],
@@ -128,6 +132,7 @@ class RecipeData {
       ],
     ),
     Recipe(
+      id: 5,
       createdBy: 'Admin',
       name: 'Greek Salad',
       tags: ['Easy', 'Greek', 'Vegetarian', 'Gluten-Free', 'Healthy'],
@@ -158,6 +163,7 @@ class RecipeData {
       ],
     ),
     Recipe(
+      id: 6,
       createdBy: 'Admin',
       name: 'Butter Chicken',
       tags: ['Medium', 'Indian', 'Non-Vegetarian', 'Spicy'],

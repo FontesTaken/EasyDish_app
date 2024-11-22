@@ -1,7 +1,10 @@
 // recipe_detail_page.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../data_classes/recipe.dart';
+import '../auxiliary/scheduleNotification.dart';
+import '../auxiliary/sendNotification.dart';
 import '../auxiliary/tag_widget.dart';
 import '../bookmark/bookmark_manager.dart';
 import '../../data_classes/comment.dart';
@@ -23,18 +26,80 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   List<Timer?> activeTimers = [];
   bool isBookmarked = false;
 
+
+  void navigateToRateRecipe() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RateRecipePage(
+          recipeName: widget.recipe.name,
+          onSubmit: (comment) {
+            setState(() {
+              widget.recipe.comments.add(comment);
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     stepCompletionStatus =
         List.generate(widget.recipe.steps.length, (index) => false);
-    stepTimers = widget.recipe.steps
-        .map((step) => step.timer)
-        .toList(); //Tive que mudar isto !!!!!! sdonawsdiofniwfniweniwernewpr
     activeTimers = List.generate(widget.recipe.steps.length, (index) => null);
+    loadTimerState();
 
     // Check if the recipe is already bookmarked
     isBookmarked = BookmarkManager().isBookmarked(widget.recipe);
+  }
+
+
+  Future<void> loadTimerState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      stepTimers = widget.recipe.steps.asMap().entries.map((entry) {
+        int index = entry.key;
+        RecipeStep step = entry.value;
+
+        int? savedTime = prefs.getInt('step ${widget.recipe.id} $index');
+        int? startTime = prefs.getInt('startTime ${widget.recipe.id} $index');
+
+        if (savedTime != null) {
+          if (startTime != null) {
+            int elapsed = DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(startTime)).inSeconds;
+            int remainingTime = savedTime - elapsed;
+            if (remainingTime > 0) {
+              startTimer(index, remainingTime);
+              return remainingTime;
+            }
+            return 0;
+          }
+          return savedTime;
+        }
+
+        return step.timer != null ? step.timer! * 60 : null;
+      }).toList();
+    });
+  }
+
+  Future<void> saveTimerState(int index, bool isTimerRunning) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String key = 'step ${widget.recipe.id} $index';
+    int? value = stepTimers[index];
+
+    if (value != null) {
+      prefs.setInt(key, value);
+      if (isTimerRunning) {
+        prefs.setInt('startTime ${widget.recipe.id} $index', DateTime.now().millisecondsSinceEpoch);
+      } else {
+        prefs.remove('startTime ${widget.recipe.id} $index');
+      }
+    } else {
+      prefs.remove(key);
+      prefs.remove('startTime ${widget.recipe.id} $index');
+    }
   }
 
   @override
@@ -51,25 +116,64 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
     });
   }
 
+  void startTimer(int index, int secondsLeft) {
+    activeTimers[index] = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (secondsLeft > 0) {
+          secondsLeft--;
+          stepTimers[index] = secondsLeft;
+          saveTimerState(index, true);
+        } else {
+          timer.cancel();
+          activeTimers[index] = null;
+          saveTimerState(index, false);
+          sendNotification('Timer Completed', 'Step ${index + 1} of the recipe is done!');
+        }
+      });
+    });
+
+    final scheduledTime = DateTime.now().add(Duration(seconds: secondsLeft));
+    scheduleNotification(
+      title: 'Timer Completed',
+      body: 'Step ${index + 1} of the recipe is done!',
+      scheduledDate: scheduledTime,
+    );
+  }
+
+  Future<void> resetTimer() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    for (var timer in activeTimers) {
+      timer?.cancel();
+    }
+
+    setState(() {
+      stepTimers = widget.recipe.steps.asMap().entries.map((entry) {
+        int index = entry.key;
+        RecipeStep step = entry.value;
+        prefs.remove('startTime ${widget.recipe.id} $index');
+        prefs.remove('step ${widget.recipe.id} $index');
+        if (step.timer != null) {
+          stepTimers[index] = widget.recipe.steps[index].timer! * 60;
+          return step.timer! * 60;
+        } else {
+          return null;
+        }
+      }).toList();
+    });
+
+    activeTimers = List.generate(widget.recipe.steps.length, (_) => null);
+  }
+
   void toggleTimer(int index) {
     if (activeTimers[index] == null) {
-      int secondsLeft = stepTimers[index]!;
-      activeTimers[index] = Timer.periodic(const Duration(seconds: 1), (timer) {
-        setState(() {
-          if (secondsLeft > 0) {
-            secondsLeft--;
-            stepTimers[index] = secondsLeft;
-          } else {
-            timer.cancel();
-            activeTimers[index] = null;
-            stepTimers[index] = widget.recipe.steps[index].timer! * 60;
-          }
-        });
-      });
+      int secondsLeft = stepTimers[index] ?? 0;
+      startTimer(index, secondsLeft);
+      saveTimerState(index, true);
     } else {
       activeTimers[index]?.cancel();
       setState(() {
         activeTimers[index] = null;
+        saveTimerState(index, false);
       });
     }
   }
@@ -89,22 +193,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
       }
       isBookmarked = !isBookmarked;
     });
-  }
-
-  void navigateToRateRecipe() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => RateRecipePage(
-          recipeName: widget.recipe.name,
-          onSubmit: (comment) {
-            setState(() {
-              widget.recipe.comments.add(comment);
-            });
-          },
-        ),
-      ),
-    );
   }
 
   @override
@@ -188,7 +276,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                     .map((ingredient) => Text(
                         '- ${ingredient.name}: ${ingredient.getAdjustedQuantity(widget.recipe.servings, widget.recipe.defaultServings)} ${ingredient.unit}',
                         style: TextStyle(
-                          fontSize: 1,
+                          fontSize: 14,
                           color: Color(0xFF885B0E),
                           fontWeight: FontWeight.bold,
                         )))
@@ -224,12 +312,23 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                const Text('Steps:',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFF754F0D),
-                      fontWeight: FontWeight.bold,
-                    )),
+                Row(
+                  children: [
+                    const Text(
+                        'Steps:',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xFF754F0D),
+                          fontWeight: FontWeight.bold,
+                        )
+                    ),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                      onPressed: () => resetTimer(),
+                      child: Text("Reset Timers"),
+                    ),
+                  ],
+                ),
                 ...widget.recipe.steps.asMap().entries.map((entry) {
                   int index = entry.key;
                   RecipeStep step = entry.value;
@@ -251,15 +350,17 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                     subtitle: hasTimer
                         ? Row(
                             children: [
-                              Text(
-                                  'Time left: ${formatTime(stepTimers[index] ?? 0)}'),
-                              const SizedBox(width: 10),
-                              ElevatedButton(
-                                onPressed: () => toggleTimer(index),
-                                child: Text(isTimerActive
-                                    ? 'Stop Timer'
-                                    : 'Start Timer'),
-                              ),
+                              if (index < stepTimers.length && stepTimers[index] != null) ...[
+                                Text('Time left: ${formatTime(
+                                    stepTimers[index] ?? 0)}'),
+                                const SizedBox(width: 10),
+                                ElevatedButton(
+                                  onPressed: () => toggleTimer(index),
+                                  child: Text(isTimerActive
+                                      ? 'Stop Timer'
+                                      : 'Start Timer'),
+                                ),
+                              ]
                             ],
                           )
                         : null,

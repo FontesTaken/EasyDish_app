@@ -70,6 +70,7 @@ class _AddStepsPageState extends State<AddStepsPage> {
     }
 
     final newRecipe = Recipe(
+      id: RecipeData.recipes.length + 1,
       createdBy:
           UserData.instance.isLoggedIn ? UserData.instance.name : "Anonymous",
       name: widget.recipeName,

@@ -1,8 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/screens/guest/enter_app_options.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
-void main() {
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  tz.initializeTimeZones();
+
+  await initializeNotifications();
+
   runApp(const MyApp());
+
+}
+
+Future<void> initializeNotifications() async {
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('logo_transp');
+
+  const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
 
 class MyApp extends StatelessWidget {
