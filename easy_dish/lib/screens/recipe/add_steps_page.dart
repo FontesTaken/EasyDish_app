@@ -110,113 +110,235 @@ class _AddStepsPageState extends State<AddStepsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Step ${steps.length + 1}"), // Display current step number
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            // Title input
-            const Text("Title:",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            TextField(
-              controller: titleController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Enter step title (optional)",
+    return Container(
+        color: Colors.white, // Base color to prevent blending issues
+        child: Scaffold(
+          backgroundColor: Colors.orange.withOpacity(0.19),
+          appBar: AppBar(
+            backgroundColor: Colors.orange.withOpacity(0.01),
+            title: Text(
+                "Step ${steps.length + 1}",
+                style: TextStyle(
+                  color: Color(0xFFC08019),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                )
+            ), // Display current step number
+            leading: IconButton(
+              icon: const Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFFC08019)
               ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-            const SizedBox(height: 16),
-
-            // Description input
-            const Text("Description:",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            TextField(
-              controller: descriptionController,
-              maxLines: 3,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Enter step description",
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Timer input
-            const Text("Timer:",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
               children: [
-                IconButton(
-                  onPressed: () {
-                    if (timer > 0) {
-                      setState(() {
-                        timer -= 30; // Decrease by 1 minute (60 seconds)
-                      });
-                    }
-                  },
-                  icon: const Icon(Icons.remove_circle_outline),
+                // Title input
+                const Text(
+                    "Title:",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF754F0D),
+                      fontWeight: FontWeight.bold,
+                    )),
+                TextField(
+                  controller: titleController,
+                  decoration: InputDecoration(
+                    labelStyle: const TextStyle(
+                      color: Color(0xFF9B7530),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    hintText: "Enter step title (optional)",
+                    hintStyle: const TextStyle(
+                      color: Color(0xFFC08019),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFFFD095),
+                        width: 1.5,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Colors.orange, // Color when TextField is focused
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE0BC91), // Border color when enabled
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFFFFDAB0),
+                  ),
                 ),
-                Text(
-                  "${(timer ~/ 60).toString().padLeft(2, '0')}:${(timer % 60).toString().padLeft(2, '0')}", // Display as MM:SS
-                  style: const TextStyle(fontSize: 18),
+                const SizedBox(height: 16),
+
+                // Description input
+                const Text(
+                    "Description:",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF754F0D),
+                      fontWeight: FontWeight.bold,
+                    )),
+                TextField(
+                  controller: descriptionController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    hintText: "Enter step description",
+                    labelStyle: const TextStyle(
+                      color: Color(0xFF9B7530),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    hintStyle: const TextStyle(
+                      color: Color(0xFFC08019),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFFFD095),
+                        width: 1.5,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Colors.orange, // Color when TextField is focused
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE0BC91), // Border color when enabled
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFFFFDAB0),
+                  ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      timer += 30; // Increase by 1 minute (60 seconds)
-                    });
-                  },
-                  icon: const Icon(Icons.add_circle_outline),
+                const SizedBox(height: 16),
+
+                // Timer input
+                const Text(
+                    "Timer:",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF754F0D),
+                      fontWeight: FontWeight.bold,
+                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        if (timer > 0) {
+                          setState(() {
+                            timer -= 30; // Decrease by 1 minute (60 seconds)
+                          });
+                        }
+                      },
+                      icon: const Icon(
+                          Icons.remove_circle_outline,
+                          color: Color(0xFF79551D)
+                      ),
+                    ),
+                    Text(
+                      "${(timer ~/ 60).toString().padLeft(2, '0')}:${(timer % 60).toString().padLeft(2, '0')}", // Display as MM:SS
+                      style: const TextStyle(fontSize: 18, color: Color(0xFF79551D)),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          timer += 30; // Increase by 1 minute (60 seconds)
+                        });
+                      },
+                      icon: const Icon(
+                          Icons.add_circle_outline,
+                          color: Color(0xFF79551D)
+                      ),
+                    ),
+                  ],
                 ),
+
+                const SizedBox(height: 24),
+
+                // Add step and Finish buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _addStep,
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFFD095),
+                          elevation: 4
+                      ),
+                      child: const Text(
+                          "Add Step",
+                          style: TextStyle(
+                            color: Color(0xFF885B0E),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          )
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: _finishRecipe,
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFFD095),
+                          elevation: 4
+                      ),
+                      child: const Text(
+                          "Finish",
+                          style: TextStyle(
+                            color: Color(0xFF885B0E),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+
+                // Display added steps
+                if (steps.isNotEmpty) ...[
+                  const Text("Steps Added:",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  ...steps.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final step = entry.value;
+                    return ListTile(
+                      title: Text("Step ${index + 1}: ${step.description}"),
+                      subtitle: step.timer != null
+                          ? Text(
+                              "Timer: ${(step.timer! ~/ 60).toString().padLeft(2, '0')}:${(step.timer! % 60).toString().padLeft(2, '0')}")
+                          : null,
+                    );
+                  }),
+                ],
               ],
             ),
-
-            const SizedBox(height: 24),
-
-            // Add step and Finish buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _addStep,
-                  child: const Text("Add Step"),
-                ),
-                ElevatedButton(
-                  onPressed: _finishRecipe,
-                  child: const Text("Finish"),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            // Display added steps
-            if (steps.isNotEmpty) ...[
-              const Text("Steps Added:",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              ...steps.asMap().entries.map((entry) {
-                final index = entry.key;
-                final step = entry.value;
-                return ListTile(
-                  title: Text("Step ${index + 1}: ${step.description}"),
-                  subtitle: step.timer != null
-                      ? Text(
-                          "Timer: ${(step.timer! ~/ 60).toString().padLeft(2, '0')}:${(step.timer! % 60).toString().padLeft(2, '0')}")
-                      : null,
-                );
-              }),
-            ],
-          ],
-        ),
-      ),
+          ),
+        )
     );
   }
 }

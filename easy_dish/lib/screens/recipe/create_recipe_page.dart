@@ -38,7 +38,17 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Add Tag"),
+          backgroundColor: const Color(0xFFFFF4E3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0), // Rounded corners
+          ),
+          title: const Text(
+              "Add Tag",
+              style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF885B0E),
+          )),
           content: TextField(
             controller: tagController,
             decoration: const InputDecoration(hintText: "Enter tag"),
@@ -59,6 +69,10 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                   Navigator.pop(context);
                 }
               },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFD095),
+                  elevation: 4
+              ),
               child: const Text("Add"),
             ),
           ],
@@ -78,7 +92,17 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Add Ingredient"),
+          backgroundColor: const Color(0xFFFFF4E3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0), // Rounded corners
+          ),
+          title: const Text(
+            "Add Ingredient",
+            style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF885B0E),
+          )),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -107,6 +131,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                   hintText: "Select unit",
                   border: OutlineInputBorder(),
                 ),
+                dropdownColor: const Color(0xFFFFF4E3),
               ),
             ],
           ),
@@ -139,6 +164,10 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                   );
                 }
               },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFD095),
+                  elevation: 4
+              ),
               child: const Text("Add"),
             ),
           ],
@@ -174,120 +203,291 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
 
    @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Create a Recipe"),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            GestureDetector(
-              onTap: _pickImage,
-              child: Container(
-                height: 150,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(12),
-                  image: recipeImage != null
-                      ? DecorationImage(
-                          image: FileImage(recipeImage!),
-                          fit: BoxFit.cover,
-                        )
-                      : null,
+     return Container(
+         color: Colors.white, // Base color to prevent blending issues
+         child: Scaffold(
+          backgroundColor: Colors.orange.withOpacity(0.19),
+          appBar: AppBar(
+            title: const Text(
+                "Create a Recipe",
+                style: TextStyle(
+                  color: Color(0xFFC08019),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                )
+            ),
+            leading: IconButton(
+              icon: const Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFFC08019)
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            backgroundColor: Colors.orange.withOpacity(0.01),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              children: [
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: Container(
+                    height: 150,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.orange.withOpacity(0.19),
+                      borderRadius: BorderRadius.circular(12),
+                      image: recipeImage != null
+                          ? DecorationImage(
+                              image: FileImage(recipeImage!),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
+                    ),
+                    child: recipeImage == null
+                        ? const Center(
+                            child: Icon(Icons.camera_alt, size: 50, color: Colors.orangeAccent),
+                          )
+                        : null,
+                  ),
                 ),
-                child: recipeImage == null
-                    ? const Center(
-                        child: Icon(Icons.camera_alt, size: 50),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: recipeNameController,
+                  decoration: InputDecoration(
+                    labelText: "Recipe Name",
+                    labelStyle: const TextStyle(
+                      color: Color(0xFF9B7530),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFFFD095),
+                        width: 1.5,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.orange, // Color when TextField is focused
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Color(0xFFE0BC91), // Border color when enabled
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Color(0xFFFFDAB0),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: descriptionController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    labelText: "Description",
+                    labelStyle: const TextStyle(
+                      color: Color(0xFF9B7530),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFFFD095),
+                        width: 1.5,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Colors.orange, // Color when TextField is focused
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE0BC91), // Border color when enabled
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFFFFDAB0),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    const Text(
+                      "Tags:",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xFF754F0D),
+                        fontWeight: FontWeight.bold,
                       )
-                    : null,
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: recipeNameController,
-              decoration: const InputDecoration(
-                labelText: "Recipe Name",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: descriptionController,
-              maxLines: 3,
-              decoration: const InputDecoration(
-                labelText: "Description",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Tags:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ElevatedButton(onPressed: _addTag, child: const Text("Add")),
-              ],
-            ),
-            Wrap(
-              spacing: 8.0,
-              children: tags.map((tag) => Chip(label: Text(tag))).toList(),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                const Text("Servings:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                IconButton(
-                  onPressed: () {
-                    if (servings > 1) {
-                      setState(() {
-                        servings--;
-                      });
-                    }
-                  },
-                  icon: const Icon(Icons.remove_circle_outline),
+                    ),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                        onPressed: _addTag,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFFFD095),
+                            elevation: 4
+                        ),
+                        child: const Text(
+                            "Add",
+                            style: TextStyle(
+                              color: Color(0xFF885B0E),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ))
+                    ),
+                  ],
                 ),
-                Text(servings.toString()),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      servings++;
-                    });
-                  },
-                  icon: const Icon(Icons.add_circle_outline),
+                Wrap(
+                  spacing: 8.0,
+                  children: tags.map((tag) => Chip(label: Text(tag))).toList(),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    const Text("Servings:", style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF754F0D),
+                      fontWeight: FontWeight.bold,
+                    )),
+                    IconButton(
+                      onPressed: () {
+                        if (servings > 1) {
+                          setState(() {
+                            servings--;
+                          });
+                        }
+                      },
+                      icon: const Icon(Icons.remove_circle_outline),
+                    ),
+                    Text(servings.toString()),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          servings++;
+                        });
+                      },
+                      icon: const Icon(Icons.add_circle_outline),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    const Text("Ingredients:", style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF754F0D),
+                      fontWeight: FontWeight.bold,
+                    )),
+                    const SizedBox(width: 16),
+                    if (ingredients.isNotEmpty) ...[
+                      ElevatedButton(
+                          onPressed: _addIngredient,
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFFFD095),
+                              elevation: 4
+                          ),
+                          child: const Text(
+                              "Add",
+                              style: TextStyle(
+                                color: Color(0xFF885B0E),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ))
+                      ),
+                    ]
+                  ],
+                ),
+                const SizedBox(height: 16),
+                ingredients.isEmpty
+                    ?
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "No ingredients added",
+                        style: TextStyle(
+                          color: Color(0xFF885B0E),
+                          fontSize: 18
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      GestureDetector(
+                        onTap: _addIngredient,
+                        child: const Text(
+                          "Add them here!",
+                          style: TextStyle(
+                            color: Color(0xFF885B0E),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                    : Column(
+                  children: ingredients.map((ingredient) {
+                    return ListTile(
+                      title: Text(
+                        ingredient.name,
+                        style: TextStyle(
+                          color: Color(0xFF885B0E),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        )
+                      ),
+                      subtitle:
+                      Text(
+                        "${ingredient.baseQuantity} ${ingredient.unit}",
+                        style: TextStyle(
+                          color: Color(0xFF885B0E),
+                          fontSize: 16
+                        )
+                      ),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                     padding: const EdgeInsets.all(16.0),
+                     child: ElevatedButton(
+                    onPressed: _goToNextPage,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFFFD095),
+                        elevation: 4
+                    ),
+                    child: const Text(
+                        "Next",
+                        style: TextStyle(
+                          color: Color(0xFF885B0E),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        )),
+                    ),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Ingredients:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ElevatedButton(onPressed: _addIngredient, child: const Text("Add")),
-              ],
-            ),
-            ...ingredients.map((ingredient) {
-              return ListTile(
-                title: Text(ingredient.name),
-                subtitle: Text("${ingredient.baseQuantity} ${ingredient.unit}"),
-              );
-            }),
-            const SizedBox(height: 24),
-            Center(
-              child: ElevatedButton(
-                onPressed: _goToNextPage,
-                child: const Text("Next"),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        )
+     );
   }
 }

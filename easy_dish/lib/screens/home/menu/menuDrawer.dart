@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/screens/bookmark/bookmark_page.dart';
 
 import '../../../data_classes/user_data.dart';
 import '../../aboutUs/about_us.dart';
@@ -28,22 +29,6 @@ Drawer menuDrawer(BuildContext context) {
           const SizedBox(height: 20),
           // Menu items for logged-in users
           ListTile(
-            leading: const Icon(
-              Icons.bookmark_border,
-              size: 30,
-              color: Color(0xFF885B0E),
-            ),
-            title: const Text('Bookmarks',
-                style: TextStyle(
-                  color: Color(0xFFC28119),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                )),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.add, size: 30, color: Color(0xFF885B0E)),
             title: const Text('Create Recipe',
                 style: TextStyle(
@@ -59,19 +44,6 @@ Drawer menuDrawer(BuildContext context) {
                   builder: (context) => const CreateRecipePage(),
                 ),
               );
-            },
-          ),
-          ListTile(
-            leading:
-                const Icon(Icons.list_alt, size: 30, color: Color(0xFF885B0E)),
-            title: const Text('My Recipes',
-                style: TextStyle(
-                  color: Color(0xFFC28119),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                )),
-            onTap: () {
-              Navigator.pop(context);
             },
           ),
           const Spacer(),
