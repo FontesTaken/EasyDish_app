@@ -1,6 +1,7 @@
 // recipe_detail_page.dart
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart'; 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../data_classes/recipe.dart';
@@ -248,35 +249,28 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: widget.recipe.imageUrl != null &&
-                              widget.recipe.imageUrl.isNotEmpty
-                          ? (widget.recipe.imageUrl.startsWith('http')
-                              ? Image.network(
-                                  widget.recipe.imageUrl,
-                                  height: 200,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.file(
-                                  File(widget.recipe.imageUrl),
-                                  height: 200,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ))
-                          : Image.asset(
-                              "assets/meal_default_img.jpg",
+                  child: widget.recipe.imageUrl.isNotEmpty
+                      ? (kIsWeb || widget.recipe.imageUrl.startsWith('http')
+                          ? Image.network(
+                              widget.recipe.imageUrl,
                               height: 200,
                               width: double.infinity,
                               fit: BoxFit.cover,
-                            ),
-                    ),
-                  ),
+                            )
+                          : Image.file(
+                              File(widget.recipe.imageUrl),
+                              height: 200,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ))
+                      : Image.asset(
+                          "assets/meal_default_img.jpg",
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 const SizedBox(height: 16),
-                const SizedBox(height: 8),
                 Text(widget.recipe.description,
                     textAlign: TextAlign.center,
                     style: TextStyle(
