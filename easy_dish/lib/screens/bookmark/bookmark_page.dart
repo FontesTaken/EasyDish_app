@@ -1,3 +1,5 @@
+import 'dart:io'; // For File handling
+import 'package:flutter/foundation.dart'; // For kIsWeb
 import 'package:flutter/material.dart';
 import '../recipe/recipe_detail_page.dart';
 import 'bookmark_manager.dart';
@@ -37,74 +39,91 @@ class _BookmarkPageState extends State<BookmarkPage> {
           padding: const EdgeInsets.all(16.0),
           child: BookmarkManager().bookmarks.isEmpty
               ? const Center(
-            child: Text(
-              "No recipes bookmarked yet.",
-              style: TextStyle(
-                fontSize: 18,
-                color: Color(0xFF885B0E),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          )
-              : ListView.builder(
-            itemCount: BookmarkManager().bookmarks.length,
-            itemBuilder: (context, index) {
-              final recipe = BookmarkManager().bookmarks[index];
-              return Card(
-                color: const Color(0xFFFFD095), // Matching recipe list card color
-                elevation: 4,
-                margin: const EdgeInsets.symmetric(vertical: 8.0),
-                child: ListTile(
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Image.network(
-                      recipe.imageUrl,
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  title: Text(
-                    recipe.name,
-                    style: const TextStyle(
+                  child: Text(
+                    "No recipes bookmarked yet.",
+                    style: TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
                       color: Color(0xFF885B0E),
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 8.0), // Add spacing to the top
-                      Wrap(
-                        spacing: 4.0,
-                        children: recipe.tags
-                            .map((tag) => TagWidget(text: tag))
-                            .toList(),
-                      ),
-                    ],
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    color: const Color(0xFF885B0E),
-                    onPressed: () {
-                      setState(() {
-                        BookmarkManager().removeBookmark(recipe);
-                      });
-                    },
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RecipeDetailPage(recipe: recipe),
+                )
+              : ListView.builder(
+                  itemCount: BookmarkManager().bookmarks.length,
+                  itemBuilder: (context, index) {
+                    final recipe = BookmarkManager().bookmarks[index];
+                    return Card(
+                      color: const Color(
+                          0xFFFFD095), // Matching recipe list card color
+                      elevation: 4,
+                      margin: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ListTile(
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: kIsWeb
+                              ? Image.network(
+                                  recipe.imageUrl,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                )
+                              : (recipe.imageUrl.startsWith('http')
+                                  ? Image.network(
+                                      recipe.imageUrl,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.file(
+                                      File(recipe.imageUrl),
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    )),
+                        ),
+                        title: Text(
+                          recipe.name,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF885B0E),
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                                height: 8.0), // Add spacing to the top
+                            Wrap(
+                              spacing: 4.0,
+                              children: recipe.tags
+                                  .map((tag) => TagWidget(text: tag))
+                                  .toList(),
+                            ),
+                          ],
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          color: const Color(0xFF885B0E),
+                          onPressed: () {
+                            setState(() {
+                              BookmarkManager().removeBookmark(recipe);
+                            });
+                          },
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  RecipeDetailPage(recipe: recipe),
+                            ),
+                          );
+                        },
                       ),
                     );
                   },
                 ),
-              );
-            },
-          ),
         ),
       ),
     );
