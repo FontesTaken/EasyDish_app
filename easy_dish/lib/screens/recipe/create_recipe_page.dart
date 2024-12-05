@@ -358,30 +358,51 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                 ),
                 const SizedBox(height: 16),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text("Servings:", style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFF754F0D),
-                      fontWeight: FontWeight.bold,
-                    )),
-                    IconButton(
-                      onPressed: () {
-                        if (servings > 1) {
-                          setState(() {
-                            servings--;
-                          });
-                        }
-                      },
-                      icon: const Icon(Icons.remove_circle_outline),
+                    const Text(
+                      "Servings:",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xFF754F0D),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    Text(servings.toString()),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          servings++;
-                        });
-                      },
-                      icon: const Icon(Icons.add_circle_outline),
+                    const SizedBox(width: 16),
+                    SizedBox(
+                      width: 50, // Width for the text box
+                      child: TextField(
+                        onChanged: (value) {
+                          final parsedValue = int.tryParse(value);
+                          if (parsedValue != null && parsedValue > 0) {
+                            setState(() {
+                              servings = parsedValue;
+                            });
+                          }
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true,
+                          fillColor: Color(0xFFFFDAB0),
+                        ),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF9B7530),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Text(
+                      "$servings servings",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF754F0D),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -414,8 +435,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                 ),
                 const SizedBox(height: 16),
                 ingredients.isEmpty
-                    ?
-                Center(
+                    ? Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -423,7 +443,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                         "No ingredients added",
                         style: TextStyle(
                           color: Color(0xFF885B0E),
-                          fontSize: 18
+                          fontSize: 18,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -450,40 +470,46 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                           color: Color(0xFF885B0E),
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                        )
+                        ),
                       ),
-                      subtitle:
-                      Text(
+                      subtitle: Text(
                         "${ingredient.baseQuantity} ${ingredient.unit}",
                         style: TextStyle(
                           color: Color(0xFF885B0E),
-                          fontSize: 16
-                        )
+                          fontSize: 16,
+                        ),
                       ),
                     );
                   }).toList(),
                 ),
                 const SizedBox(height: 8),
+                Container(
+                  height: 2, // Slim bar
+                  color: Colors.deepOrangeAccent,
+                  margin: const EdgeInsets.symmetric(vertical: 16), // Add spacing around the bar
+                ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                     padding: const EdgeInsets.all(16.0),
-                     child: ElevatedButton(
-                    onPressed: _goToNextPage,
-                    style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      onPressed: _goToNextPage,
+                      style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFFFFD095),
-                        elevation: 4
-                    ),
-                    child: const Text(
-                        "Next",
+                        elevation: 4,
+                      ),
+                      child: const Text(
+                        "Add Steps",
                         style: TextStyle(
                           color: Color(0xFF885B0E),
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                        )),
+                        ),
+                      ),
                     ),
                   ),
                 ),
+
               ],
             ),
           ),

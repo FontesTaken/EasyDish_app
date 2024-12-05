@@ -129,6 +129,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
         } else {
           timer.cancel();
           activeTimers[index] = null;
+          stepTimers[index] = 0; // Explicitly set to 0
           saveTimerState(index, false);
           sendNotification(
               'Timer Completed', 'Step ${index + 1} of the recipe is done!');
@@ -143,6 +144,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
       scheduledDate: scheduledTime,
     );
   }
+
 
   Future<void> resetTimer() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -306,30 +308,47 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    const Text('Servings:',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xFF754F0D),
-                          fontWeight: FontWeight.bold,
-                        )),
-                    IconButton(
-                      icon: const Icon(Icons.remove_circle_outline),
-                      onPressed: () {
-                        setState(() {
-                          if (widget.recipe.servings > 1) {
-                            widget.recipe.servings--;
-                          }
-                        });
-                      },
+                    const Text(
+                      'Servings:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xFF754F0D),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    Text('${widget.recipe.servings}'),
-                    IconButton(
-                      icon: const Icon(Icons.add_circle_outline),
-                      onPressed: () {
-                        setState(() {
-                          widget.recipe.servings++;
-                        });
-                      },
+                    const SizedBox(width: 8),
+                    SizedBox(
+                      width: 50,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          isDense: true, // Reduce padding
+                          contentPadding: EdgeInsets.symmetric(vertical: 8),
+                        ),
+                        onSubmitted: (value) {
+                          setState(() {
+                            int? inputServings = int.tryParse(value);
+                            if (inputServings != null && inputServings > 0) {
+                              widget.recipe.servings = inputServings;
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Please enter a valid number.')),
+                              );
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Text(
+                      'Current: ${widget.recipe.servings}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF885B0E),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -376,31 +395,37 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                     ),
                     subtitle: hasTimer
                         ? Row(
-                            children: [
-                              if (index < stepTimers.length &&
-                                  stepTimers[index] != null) ...[
-                                Text(
-                                    'Time left: ${formatTime(stepTimers[index] ?? 0)}'),
-                                const SizedBox(width: 10),
-                                ElevatedButton(
-                                  onPressed: () => toggleTimer(index),
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFFFFD095),
-                                      elevation: 4),
-                                  child: Text(
-                                      isTimerActive
-                                          ? 'Stop Timer'
-                                          : 'Start Timer',
-                                      style: TextStyle(
-                                        color: Color(0xFF885B0E),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                      )),
-                                ),
-                              ]
-                            ],
-                          )
+                      children: [
+                        if (index < stepTimers.length && stepTimers[index] != null) ...[
+                          Text('Time left: ${formatTime(stepTimers[index] ?? 0)}'),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              if (stepTimers[index] == 0) {
+                                setState(() {
+                                  stepTimers[index] = step.timer; // Reset timer to default
+                                });
+                                startTimer(index, stepTimers[index]!);
+                              } else {
+                                toggleTimer(index);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFFFFD095), elevation: 4),
+                            child: Text(
+                              stepTimers[index] == 0 ? 'Restart Timer' : isTimerActive ? 'Stop Timer' : 'Start Timer',
+                              style: TextStyle(
+                                color: Color(0xFF885B0E),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ]
+                      ],
+                    )
                         : null,
+
                   );
                 }).toList(),
                 const SizedBox(height: 16),
